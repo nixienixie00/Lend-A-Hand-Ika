@@ -36,7 +36,7 @@
 
         }
 
-        h2 {
+        #title {
 
             color: #FF5F00;
             text-align: center;
@@ -56,9 +56,10 @@
         #main li a:hover {
           background-color: #CCCCCC;
 
+
         }
 
-        img {
+        header img {
           width: 100px;
           height: 100px;
           margin-top: 15px;
@@ -111,12 +112,10 @@
           color: black;
           padding: 10px 15px;
           border: none;
-          margin-top: 130px
+          margin-top: 90px
+
         }
 
-        .openbtn:hover {
-          background-color: #CCCCCC;
-        }
 
 
         #main {
@@ -144,7 +143,169 @@
           display: flex;
           align-items: center;
           justify-content: space-between;
+          background-color: white;
          }
+
+
+         .slider {
+          -webkit-appearance: none;
+          width: 100%;
+          height: 15px;
+          border-radius: 5px;
+          background: white;
+          outline: none;
+          opacity: 0.7;
+          -webkit-transition: .2s;
+          transition: opacity .2s;
+        }
+
+        .slider::-webkit-slider-thumb {
+          -webkit-appearance: none;
+          appearance: none;
+          width: 25px;
+          height: 25px;
+          border-radius: 50%;
+          background: black;
+          cursor: pointer;
+        }
+
+        .slider::-moz-range-thumb {
+          width: 25px;
+          height: 25px;
+          border-radius: 50%;
+          background: black;
+          cursor: pointer;
+        }
+
+        .results {
+            text-align: center;
+            width: 30%;
+            background-color: #ECECEC;
+            margin: 25px;
+
+            float: left;
+            border-radius: 10px 10px 10px 10px;
+
+
+        }
+
+        .results h3{
+            margin-top: 10px;
+            color: #FF5F00;
+
+        }
+
+
+
+        .results img {
+
+            margin: 10px;
+            width: 50%;
+            height: 10%;
+
+
+
+        }
+
+        #moreinfo {
+          font-size: 20px;
+          cursor: pointer;
+          color: black;
+          border: none;
+          padding: 15px;
+          margin-bottom: 27px;
+          background-color: white;
+
+        }
+
+        button:hover {
+            background-color: #CCCCCC;
+
+        }
+
+        #moreinfo:hover {
+            background-color: #CCCCCC;
+        }
+
+        button {
+            transition: 0.3s;
+
+        }
+
+        .popup {
+          display: none;
+          position: fixed;
+          padding: 10px;
+          width: 30%;
+          left: 25%;
+          top: 50%;
+          background: white;
+          border: none;
+          z-index: 20;
+          transition: 0.3s;
+
+
+        }
+
+
+
+        #popup:after {
+          position: fixed;
+          content: "";
+          top: 0;
+          left: 0;
+          bottom: 0;
+          right: 0;
+          background: rgba(0,0,0,0.5);
+          z-index: -2;
+        }
+
+        #popup:before {
+          position: absolute;
+          content: "";
+          top: 0;
+          left: 0;
+          bottom: 0;
+          right: 0;
+          background: #FFF;
+          z-index: -1;
+        }
+
+        .popup a{
+            display: block;
+            margin-left: 90%;
+            background-color: transparent;
+            font-size: 30px;
+            color: #CCCCCC;
+            text-decoration: none;
+            border: none;
+            outline: none;
+            cursor: pointer;
+        }
+
+        a {
+            transition: 0.3s;
+
+        }
+
+
+
+        .popup input{
+            width: 75%;
+            height: 65%;
+
+        }
+
+        .popup a:hover {
+            color: white;
+        }
+
+
+
+
+
+
+
 
     </style>
 </head>
@@ -157,10 +318,24 @@
             <a> </a>
             <a> Causes </a>
             <a> Location </a>
+            <a> <input type="range" min="1" max="100" value="50" class="slider" id="myRange"> </a>
+            <a id = "demo"> </a>
             <a> Required skills</a>
             <a> Age </a>
 
 
+
+    </div>
+
+    <div class="popup" id="popup">
+        <a href="javascript:void(0)" class="closebtn" onclick="hide()">&times;</a>
+        <h3> Label </h3>
+        <p> More description</p>
+        <input value="Hi Name, This is name, I am happy to perform the task needed. I am x years old, and have the following skills. <br>
+            *anything else*
+            Thank you! Name email, phone number" id="email-input">
+
+        <button> Lend a Hand!</button>
 
     </div>
 
@@ -172,7 +347,7 @@
             <ul>
 
                 <li> <img src="static/logo.png" alt="Logo"> </li>
-                <li> <h2> Lend a Hand</h2> </li>
+                <li> <h2 id="title"> Lend a Hand</h2> </li>
                 <li><a href = "">Home</a></li>
                 <li><a href="">Volunteer</a></li>
                 <li><a href="">Need a Hand?</a></li>
@@ -185,7 +360,36 @@
         </header>
 
 
-        <button class="openbtn" onclick="openNav()">&#9776; Filter your search</button>
+        <div class="results-container">
+
+
+            <button class="openbtn" onclick="openNav()">&#9776; Filter your search</button>
+
+            <p style="color: #FF5F00"> x results </p>
+
+            {% for i in range(12) %}
+
+                <div class="results">
+
+                    <h3> Label </h3>
+                    <h5> Name (Individual/Org) </h5>
+
+                    <img src="https://www.pngkit.com/png/detail/72-729913_user-blank-avatar-png.png" height="25%" width="150px">
+                    <p> Skills required: </p>
+                    <p> Approximate time: </p>
+                    <p> Cause(s): </p>
+                    <p> Inperson/ Online</p>
+                    <p> X age +</p>
+                    <p> x Km away</p>
+
+
+                    <button id="moreinfo" href="#" onclick="show()"> More info </button>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
 
     </div>
 
@@ -206,6 +410,23 @@
             function closeNav() {
               document.getElementById("mySidebar").style.width = "0";
               document.getElementById("main").style.marginLeft = "0";
+            }
+
+            var slider = document.getElementById("myRange");
+            var output = document.getElementById("demo");
+
+
+
+            function show() {
+                document.getElementById("popup").style.display ='block';
+            }
+            function hide() {
+                document.getElementById("popup").style.display ='none';
+            }
+
+
+            slider.onchange = function() {
+              output.innerHTML = "Up to " + this.value + "km away";
             }
    </script>
 
