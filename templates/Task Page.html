@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Form Page</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    .custom-box {
+      width: 80vw;
+      height: 80vh;
+    }
+    body {
+      font-family: Baskerville, serif;
+    }
+    .nav-button {
+      color: black !important;
+      font-weight: normal;
+      font-size: 24px;
+    }
+    .nav-title {
+      font-size: 55px;
+    }
+    .nav-title-black {
+      color: black;
+    }
+    .nav-title-orange {
+      color: #FF5F00;
+      font-size: 30px;
+    }
+    .nav-bar {
+      background-color: white;
+      border-bottom: 2px solid black;
+    }
+    .submit-button {
+      background-color: #CCCCCC;
+      font-weight: normal;
+    }
+    .input-box {
+      background-color: #CCCCCC;
+      border: none;
+      outline: none;
+    }
+    .logo-image {
+      width: 60px;
+      height: 60px;
+    }
+    .nav-button-container {
+      width: 20%;
+      display: flex;
+      justify-content: space-between;
+    }
+    .gray-square {
+      width: 40px;
+      height: 40px;
+      background-color: #CCCCCC;
+    }
+    .form-label {
+      text-align: left;
+      margin-right: 1rem;
+      width: 150px;
+    }
+    .form-input {
+      width: 100%;
+      display: flex;
+      align-items: center;
+    }
+    .checkbox-input {
+      width: 20px;
+      height: 20px;
+      background-color: #CCCCCC;
+      border: none;
+      outline: none;
+    }
+    .job-section,
+    .location-section {
+      width: 100%;
+      background-color: #CCCCCC;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      padding-left: 1rem;
+      margin-top: 2rem;
+    }
+    .job-text,
+    .location-text {
+      font-size: 20px;
+      color: #333333;
+      text-align: left;
+    }
+    .description-section {
+      margin-top: 2rem;
+      padding-left: 1rem;
+    }
+    .skills-section {
+      margin-top: 2rem;
+    }
+    .skills-option {
+      margin-right: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav-bar p-4">
+    <div class="container mx-auto flex justify-between items-center">
+      <div class="flex items-center">
+        <img src="Lend A Hand Logo.png" alt="Logo" class="logo-image mr-2">
+        <h1 class="nav-title nav-title-black">Lend a Hand</h1>
+      </div>
+      <div class="nav-button-container">
+        <button class="nav-button">Home</button>
+        <button class="nav-button">Need a Hand?</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="flex justify-center items-center h-screen">
+    <div class="custom-box bg-transparent p-8 rounded">
+      <h1 class="nav-title nav-title-orange text-3xl mb-4">Ask for a Hand</h1>
+
+      <form action="submit.php" method="POST">
+        <div class="mb-4 flex">
+          <div class="form-label">First Name:</div>
+          <input type="text" id="first-name" name="first-name" required class="input-box w-full px-3 py-2 rounded-lg">
+        </div>
+
+        <div class="mb-4 flex">
+          <div class="form-label">Last Name:</div>
+          <input type="text" id="last-name" name="last-name" required class="input-box w-full px-3 py-2 rounded-lg">
+        </div>
+
+        <div class="mb-4 flex">
+          <div class="form-label">Date of Birth:</div>
+          <div class="dob-inputs">
+            <input type="text" id="dob-day" name="dob-day" required class="gray-square px-3 py-2 rounded-lg" placeholder="D">
+            <input type="text" id="dob-month" name="dob-month" required class="gray-square px-3 py-2 rounded-lg" placeholder="M">
+            <input type="text" id="dob-year" name="dob-year" required class="gray-rectangle px-3 py-2 rounded-lg" placeholder="YYYY">
+          </div>
+        </div>
+
+        <div class="year-separator"></div>
+
+        <div class="mb-4 flex">
+          <div class="form-label">Organization?</div>
+          <div class="form-input">
+            <input type="checkbox" id="organization" name="organization" class="checkbox-input">
+          </div>
+        </div>
+
+        <div class="job-section">
+          <span class="job-text">Job</span>
+        </div>
+
+        <div class="description-section">
+          <div class="form-label">Description:</div>
+          <textarea id="description" name="description" class="input-box w-full rounded-lg" rows="5"></textarea>
+        </div>
+
+        <div class="skills-section">
+          <div class="form-label">Skills:</div>
+          <div class="form-input">
+            <input type="checkbox" id="physical" name="skills[]" value="physical" class="checkbox-input skills-option">
+            <label for="physical">Physical</label>
+            <input type="checkbox" id="it" name="skills[]" value="it" class="checkbox-input skills-option">
+            <label for="it">IT</label>
+            <input type="checkbox" id="creative" name="skills[]" value="creative" class="checkbox-input skills-option">
+            <label for="creative">Creative</label>
+            <input type="checkbox" id="design" name="skills[]" value="design" class="checkbox-input skills-option">
+            <label for="design">Design</label>
+          </div>
+        </div>
+
+        <div class="location-section">
+          <span class="location-text">Location</span>
+        </div>
+
+        <input type="submit" value="Submit" class="submit-button bg-blue-500 hover:bg-gray-700 text-white py-2 px-4 rounded mt-6">
+      </form>
+    </div>
+  </div>
+
+</body>
+</html>
