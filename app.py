@@ -28,6 +28,8 @@ class User(db.Model):
     password = db.Column(db.String(50), nullable=False)
     verification_code = db.Column(db.String(10), nullable=True)
 
+with app.app_context():
+        db.create_all()
 
 @app.route('/')
 def homepage():
@@ -156,6 +158,4 @@ def send_verification_email(email, verification_code):
 
 
 if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()
     app.run(debug=True)
