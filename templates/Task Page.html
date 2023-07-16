@@ -105,11 +105,67 @@
       font-size: 16px;
       cursor: pointer;
       transition: background-color 0.3s, transform 0.3s;
+      border-radius: 5px;
+      position: absolute;
+      bottom: 1rem;
+      left: 1rem;
     }
     .submit-button:hover {
       background-color: #999999;
       transform: scale(1.05);
     }
+    
+    /* New styles for City and State/Province input boxes */
+    .city-input-box {
+      width: 95%;
+      border-radius: 5px;
+    }
+    
+    .state-input-box {
+      width: 100%;
+      border-radius: 5px;
+    }
+    
+    /* New style for Postcode input box */
+    .postcode-input-box {
+      width: 100%;
+      border-radius: 5px;
+    }
+    
+    /* Updated style for form label */
+    .postcode-label {
+      margin-right: 1rem;
+      width: 150px;
+      text-align: left;
+    }
+    
+    /* Updated style for flex container of postcode label and input */
+    .postcode-container {
+      display: flex;
+      align-items: center;
+      margin-top: 1rem; /* Added margin-top */
+    }
+    
+    submit-button {
+    background-color: #CCCCCC;
+    color: #333333;
+    border: none;
+    outline: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    border-radius: 5px;
+    position: absolute;
+    bottom: 2rem; /* Adjusted bottom position */
+    left: 1rem; /* Aligned with the left of the form */
+    }
+
+    .submit-button:hover {
+    background-color: #999999;
+    transform: scale(1.05);
+    }
+
   </style>
 </head>
 <body>
@@ -199,20 +255,22 @@
         <div class="flex">
           <div class="w-1/2">
             <div class="form-label">City:</div>
-            <input type="text" id="city" name="city" class="input-box w-full px-3 py-2 rounded-lg">
+            <input type="text" id="city" name="city" class="input-box w-full px-3 py-2 rounded-lg city-input-box">
           </div>
           <div class="w-1/2">
             <div class="form-label">State/Province:</div>
-            <input type="text" id="state" name="state" class="input-box w-full px-3 py-2 rounded-lg">
+            <input type="text" id="state" name="state" class="input-box w-full px-3 py-2 rounded-lg state-input-box">
           </div>
         </div>
 
         <div class="mb-4 flex">
-          <div class="form-label">Postcode:</div>
-          <input type="text" id="postcode" name="postcode" class="input-box w-full px-3 py-2 rounded-lg">
+          <div class="postcode-container">
+            <div class="postcode-label">Postcode:</div>
+            <input type="text" id="postcode" name="postcode" class="input-box w-full px-3 py-2 rounded-lg postcode-input-box">
+          </div>
         </div>
 
-        <!-- Removed the submit button for now -->
+        <input type="submit" value="Submit" class="submit-button">
 
       </form>
     </div>
