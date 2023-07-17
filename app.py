@@ -19,6 +19,7 @@ db = SQLAlchemy(app)
 mail = Mail(app)
 
 
+
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
@@ -26,6 +27,8 @@ class User(db.Model):
     password = db.Column(db.String(50), nullable=False)
     verification_code = db.Column(db.String(10), nullable=True)
 
+with app.app_context():
+        db.create_all()
 
 @app.route('/')
 def homepage():
@@ -157,13 +160,12 @@ def send_verification_email(email, verification_code):
     msg.body = f'Your verification code is: {verification_code}'
     mail.send(msg)
 
-@app.route('/a')
+@app.route('/needahand')
 def need_a_hand():
-    return render_template('a.html')
+    return render_template('task_page.html')
 
 
 if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()
+
     app.run(debug=True)
 

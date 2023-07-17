@@ -449,18 +449,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
     </style>
 </head>
 <body>
@@ -496,6 +484,14 @@
                 </ul>
 
                 <h4> Location </h4>
+                <label class="container"> Online
+                          <input type="checkbox" id="online" onclick="range_enable()">
+                          <span class="checkmark"></span>
+                </label>
+                <label class="container"> In person
+                          <input type="checkbox" id="inperson">
+                          <span class="checkmark"></span>
+                 </label>
                 <input type="range" min="1" max="100"  oninput="progressScript()">
 
                 <div class="value">0</div>
@@ -551,7 +547,7 @@
 
                 <li> <img src="https://i.imgur.com/Tyd1kFk.png" alt="Logo"> </li>
                 <li> <h2 id="title"> Lend a Hand</h2> </li>
-                <li><a href="http://localhost:5000/a">Need a Hand?</a></li>
+                <li><a href="/needahand">Need a Hand?</a></li>
                 <li><a href="http://localhost:5000">Log out</a></li>
 
             </ul>
@@ -613,8 +609,7 @@
               document.getElementById("main").style.marginLeft = "0";
             }
 
-            var slider = document.getElementById("myRange");
-            var output = document.getElementById("location");
+
 
 
 
@@ -636,15 +631,9 @@
 
             }
 
-            const sliderEl = document.querySelector("#range")
-            const sliderValue = document.querySelector(".value")
-
-            sliderEl.addEventListener("input", (event) => {
-              const tempSliderValue = event.target.value;
-              sliderValue.textContent = tempSliderValue;
 
 
-            })
+
 
 
 
