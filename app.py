@@ -13,9 +13,7 @@ app.config['MAIL_USERNAME'] = 'lendahand_ika@outlook.com'
 app.config['MAIL_PASSWORD'] = 'Q#f3^eCGshT-9Nb'
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USE_SSL'] = False
-app.config['MAIL_DEFAULT_SENDER']='lendahand_ika@outlook.com'
-
-
+app.config['MAIL_DEFAULT_SENDER'] = 'lendahand_ika@outlook.com'
 
 db = SQLAlchemy(app)
 mail = Mail(app)
@@ -28,8 +26,6 @@ class User(db.Model):
     password = db.Column(db.String(50), nullable=False)
     verification_code = db.Column(db.String(10), nullable=True)
 
-with app.app_context():
-        db.create_all()
 
 @app.route('/')
 def homepage():
@@ -44,7 +40,8 @@ def login():
 
         user = User.query.filter_by(email=email).first()
         if user and user.password == password:
-            return redirect('/success?name=' + user.name)
+            session['user_email'] = user.email  # Store the user's email in the session
+            return redirect('/success')
 
         return render_template('login.html', message='Invalid credentials')
 
@@ -66,17 +63,21 @@ def signup():
         db.session.add(new_user)
         db.session.commit()
 
-        return redirect('/success?name=' + name)
+        session['user_email'] = email  # Store the user's email in the session
+        return redirect('/success')
 
     return render_template('signup.html')
 
 
 @app.route('/success')
 def success():
-    name = request.args.get('name')
-    return render_template('success.html', name=name)
+    user_email = session.get('user_email')
 
+    if not user_email:
+        return redirect('/login')
 
+    user = User.query.filter_by(email=user_email).first()
+    return render_template('success.html', name=user.name, user_email=user.email)
 @app.route('/forgot_password', methods=['GET', 'POST'])
 def forgot_password():
     if request.method == 'POST':
@@ -156,6 +157,13 @@ def send_verification_email(email, verification_code):
     msg.body = f'Your verification code is: {verification_code}'
     mail.send(msg)
 
+@app.route('/a')
+def need_a_hand():
+    return render_template('a.html')
+
 
 if __name__ == '__main__':
+    with app.app_context():
+        db.create_all()
     app.run(debug=True)
+
