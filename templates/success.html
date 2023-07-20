@@ -233,8 +233,9 @@
           position: fixed;
           padding: 10px;
           width: 30%;
-          left: 25%;
-          top: 25%;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
           background: white;
           border: none;
           z-index: -10;
@@ -521,9 +522,10 @@
 
     <div class="popup" id="popup">
         <a href="javascript:void(0)" class="closebtn" onclick="hide()">&times;</a>
-        <h3> Label </h3>
-        <p> More description</p>
-        <form>
+
+
+            <h3 > Label </h3>
+            <p> More description</p>
             <div id='email' contenteditable="true">
                 Hello, <br> <br>  I saw your micro-volunteering opportunity  on Lend a Hand and I am willing to help out. My name is {{ name }}.
                 I have the required skills you are looking for ( ). Please contact me  at {{ user_email }}. <br><br>  Thank you! <br> {{ name }}
@@ -533,7 +535,12 @@
             <br>
             <p style="color: #FF5F00; text-align: left; font-size: 12px; margin-left:10px"> This email will be sent to the organisation, you can add more information if you would like. <br> A reply will then be sent to your email, please be patient while waiting. </p>
 
-            <button id = "email-btn" onclick = "event.preventDefault()"> Send </button>
+
+        <form action = "/volunteer" method = "POST">
+            <input type="hidden" name="label" value="HI">
+            <input type="hidden" name="body" value="body">
+
+            <button type="submit" id = "email-btn"> Send </button>
         </form>
 
     </div>

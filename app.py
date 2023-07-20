@@ -6,6 +6,7 @@ import string
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+app.config['SQLALCHEMY_BINDS'] = {'task': 'sqlite:///tasks.db'}
 app.config['SECRET_KEY'] = 'your-secret-key'
 app.config['MAIL_SERVER'] = 'smtp.office365.com'
 app.config['MAIL_PORT'] = 587
@@ -13,10 +14,13 @@ app.config['MAIL_USERNAME'] = 'lendahand_ika@outlook.com'
 app.config['MAIL_PASSWORD'] = 'Q#f3^eCGshT-9Nb'
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USE_SSL'] = False
+app.config['TESTING'] = False
 app.config['MAIL_DEFAULT_SENDER'] = 'lendahand_ika@outlook.com'
 
 db = SQLAlchemy(app)
 mail = Mail(app)
+causes = ['Education', 'Social Justice', 'Environment','Communities/Individuals in need']
+skills = ['Education and Mentoring', 'Graphic design', 'Communication and Outreach', 'Manual work', 'IT/Programing' ]
 
 
 
@@ -26,6 +30,13 @@ class User(db.Model):
     email = db.Column(db.String(50), unique=True, nullable=False)
     password = db.Column(db.String(50), nullable=False)
     verification_code = db.Column(db.String(10), nullable=True)
+
+
+
+
+
+
+
 
 with app.app_context():
         db.create_all()
@@ -125,6 +136,22 @@ def verify():
     return render_template('verify.html')
 
 
+@app.route('/volunteer', methods=['POST'])
+def volunteer():
+    results = request.form
+
+    label = results.get('label')
+    body = results.get('body')
+    print(label)
+    print(body)
+    text = 'Lend a Hand: Volunteer for ' + label
+    msg = Message(text, recipients= ['inika.agarwal@icloud.com'])
+    msg.body = body
+    mail.send(msg)
+    return render_template('success.html')
+
+
+
 @app.route('/reset_password', methods=['GET', 'POST'])
 def reset_password():
     reset_email = session.get('reset_email')
@@ -155,6 +182,9 @@ def generate_verification_code():
     return verification_code
 
 
+
+
+
 def send_verification_email(email, verification_code):
     msg = Message('Password Reset Verification Code', recipients=[email])
     msg.body = f'Your verification code is: {verification_code}'
@@ -163,6 +193,9 @@ def send_verification_email(email, verification_code):
 @app.route('/needahand')
 def need_a_hand():
     return render_template('task_page.html')
+
+
+
 
 
 if __name__ == '__main__':
