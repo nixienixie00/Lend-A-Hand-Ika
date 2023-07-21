@@ -71,7 +71,7 @@
 <body>
   <!-- Navigation bar -->
   <div class="flex justify-between items-center p-4 bg-gray-100">
-    <a href="http://localhost:5000/success" class="text-blue-500">Back</a>
+    <a href="/success" class="text-blue-500">Back</a>
   </div>
 
   <!-- Main content -->
@@ -80,23 +80,18 @@
       <h1 class="nav-title-orange mb-4 text-2xl font-bold">Ask for a Hand</h1>
 
       <!-- Form -->
-      <form action="/task_page" method="POST">
+      <form action="/needahand" method="POST">
         <div class="mb-4">
-          <label for="first-name" class="form-label">First Name:</label>
-          <input type="text" id="first-name" name="first-name" required class="input-box w-full px-3 py-2 rounded-lg">
+          <label for="title" class="form-label">Title</label>
+          <input type="text" id="title" name="title" required class="input-box w-full px-3 py-2 rounded-lg">
         </div>
 
-        <div class="mb-4">
-          <label for="last-name" class="form-label">Last Name:</label>
-          <input type="text" id="last-name" name="last-name" required class="input-box w-full px-3 py-2 rounded-lg">
-        </div>
 
         <div class="mb-4">
           <label class="form-label">Deadline</label>
           <div class="dob-inputs">
-            <input type="text" id="dob-day" name="dob-day" required class="gray-square px-3 py-2 rounded-lg" placeholder="D">
-            <input type="text" id="dob-month" name="dob-month" required class="gray-square px-3 py-2 rounded-lg" placeholder="M">
-            <input type="text" id="dob-year" name="dob-year" required class="gray-square px-3 py-2 rounded-lg" placeholder="YYYY">
+            <input type="date" id="date" name="date" required>
+
           </div>
         </div>
 
@@ -105,20 +100,33 @@
         <div class="mb-4">
           <label class="form-label">Skills:</label>
           <div class="form-input">
-            <input type="checkbox" id="physical" name="skills[]" value="physical" class="checkbox-input skills-option">
-            <label for="physical">Physical</label>
-            <input type="checkbox" id="it" name="skills[]" value="it" class="checkbox-input skills-option">
-            <label for="it">IT</label>
-            <input type="checkbox" id="creative" name="skills[]" value="creative" class="checkbox-input skills-option">
-            <label for="creative">Creative</label>
-            <input type="checkbox" id="design" name="skills[]" value="design" class="checkbox-input skills-option">
-            <label for="design">Design</label>
+            {% for i in range(skills|length) %}
+            <input type="checkbox" id="skills[]" name="skills[]" value="{{skills[i]}}" class="checkbox-input skills-option">
+            <label for="skills[]">{{skills[i]}}</label>
+
+            {% endfor %}
+
+          </div>
+        </div>
+
+
+        <div class="mb-4">
+          <label class="form-label">Causes:</label>
+          <div class="form-input">
+             {% for i in range(causes|length) %}
+            <input type="checkbox" id="causes[]" name="causes[]" value="{{causes[i]}}" class="checkbox-input skills-option">
+            <label for="causes[]">{{causes[i]}}</label>
+
+            {% endfor %}
           </div>
         </div>
 
         <div class="mb-4">
+          <label for="online"> Online: </label>
+          <input type="checkbox" id="online" name="online" value="online">
+          <br>
           <label class="form-label">Location:</label>
-          <input type="text" id="location" name="location" required class="input-box w-full px-3 py-2 rounded-lg">
+          <input type="text" id="location" name="location"  class="input-box w-full px-3 py-2 rounded-lg">
         </div>
 
         <div class="mb-4">
@@ -128,7 +136,7 @@
 
         <div class="mb-4">
           <label for="min-age" class="form-label">Minimum age:</label>
-          <input type="number" id="min-age" name="min-age" required class="input-box w-full px-3 py-2 rounded-lg">
+          <input type="number" id="min-age" name="min-age"  class="input-box w-full px-3 py-2 rounded-lg">
         </div>
 
         <div class="mb-4">

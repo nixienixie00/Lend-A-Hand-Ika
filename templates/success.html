@@ -233,8 +233,9 @@
           position: fixed;
           padding: 10px;
           width: 30%;
-          left: 25%;
-          top: 25%;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
           background: white;
           border: none;
           z-index: -10;
@@ -486,10 +487,10 @@
                 <h4> Causes </h4>
 
                 <ul style="display: table-row">
-                {% for i in range(6) %}
+                {% for i in range(causes|length) %}
                     <li>
-                        <label class="container"> Cause
-                          <input type="checkbox" id="cause">
+                        <label class="container"> {{causes[i]}}
+                          <input type="checkbox" name = "{{causes[i]}}" value = "{{causes[i]}}" id="cause">
                           <span class="checkmark"></span>
                         </label>
                     </li>
@@ -497,15 +498,24 @@
                 </ul>
 
                 <h4> Location </h4>
+                 <label class="container"> Online
+                          <input type="checkbox" name = "online" value = "online" id="online">
+                          <span class="checkmark"></span>
+                        </label>
+
+                 <label class="container"> In person
+                          <input type="checkbox" name = "inperson" value = "inperson" id="inperson">
+                          <span class="checkmark"></span>
+                 </label>
                 <input type="range" min="1" max="100"  oninput="progressScript()">
 
                 <div class="value">0</div>
                 <h4> Required skills</h4>
                 <ul style="display: table-row">
-                {% for i in range(6) %}
+                {% for i in range(skills|length) %}
                     <li>
-                        <label class="container"> Skill
-                          <input type="checkbox" id="skill">
+                        <label class="container"> {{skills[i]}}
+                          <input type="checkbox" id="skill" name = "{{skills[i]}}" value = "{{skills[i]}}">
                           <span class="checkmark"></span>
                         </label>
                     </li>
@@ -528,7 +538,7 @@
     <a href="javascript:void(0)" class="closebtn" onclick="hidePopup()">&times;</a>
     <h3>Label</h3>
     <p>More description</p>
-    <form id="emailForm" method="post" action="/success">
+    <form id="emailForm" method="post" action="/volunteer">
         <div id="email" contenteditable="true">
             Hello, <br> <br> I saw your micro-volunteering opportunity on Lend a Hand, and I am willing to help out.
             My name is {{ name }}. I have the required skills you are looking for ().
@@ -550,8 +560,8 @@
             <ul>
                 <li><img src="https://i.imgur.com/Tyd1kFk.png" alt="Logo"></li>
                 <li><h2 id="title">Lend a Hand</h2></li>
-                <li><a href="http://localhost:5000/a">Need a Hand?</a></li>
-                <li><a href="http://localhost:5000">Log out</a></li>
+                <li><a href="/needahand">Need a Hand?</a></li>
+                <li><a href="/logout">Log out</a></li>
             </ul>
         </header>
 
@@ -561,12 +571,18 @@
             <p style="color: #FF5F00">{{ tasks | count }} results</p>
             {% for task in tasks %}
             <div class="results">
-                <h3>{{ task.first_name }} {{ task.last_name }}</h3>
+                <h3>{{ task.title}}</h3>
 
 
                 <p>Skills required: {{ task.skills }}</p>
-                <p>Deadline: {{ task.dob_day }}/{{ task.dob_month }}/{{ task.dob_year }}</p>
+                <p>Cause(s): {{ task.causes }}</p>
+                <p>Deadline: {{ task.date }}</p>
+                {% if task.online == True %}
+                <p> Location: Online </p>
+                {% endif %}
+                {% if task.online == False %}
                 <p>Location: {{ task.location }}</p>
+                {% endif %}
                 <p>Description: {{ task.additional_info }}</p>
                 <p>Time Required: {{ task.time_required}}</p>
                 <p>Minimum Age Requirement: {{task.min_age}}</p>

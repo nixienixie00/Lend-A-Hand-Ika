@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail, Message
 import secrets
 import string
+import datetime
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
@@ -18,6 +19,8 @@ app.config['MAIL_DEFAULT_SENDER'] = 'lendahand_ika@outlook.com'
 db = SQLAlchemy(app)
 mail = Mail(app)
 
+skills_array = ['Education and Mentoring', 'Graphic Design', 'Communication and Outreach', 'Manual work', 'IT/Programming']
+causes_array = ['Education', 'Social Justice', 'Communities/Individuals in need','Environment']
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -28,21 +31,28 @@ class User(db.Model):
 
 class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    first_name = db.Column(db.String(50), nullable=False)
-    last_name = db.Column(db.String(50), nullable=False)
-    dob_day = db.Column(db.Integer, nullable=False)
-    dob_month = db.Column(db.Integer, nullable=False)
-    dob_year = db.Column(db.Integer, nullable=False)
-    skills = db.Column(db.String(100), nullable=False)
-    location = db.Column(db.String(100), nullable=False)
+    user_email = db.Column(db.String(100), nullable=False)
+    title = db.Column(db.String(50), nullable=True)
+    date = db.Column(db.String(50), nullable=False)
+    skills = db.Column(db.String(400), nullable=False)
+    causes = db.Column(db.String(400), nullable=False)
+    online = db.Column(db.Boolean, nullable=True)
+    location = db.Column(db.String(100), nullable=True)
     additional_info = db.Column(db.String(300), nullable=True)
-    time_required = db.Column(db.String(50), nullable=True)
-    min_age = db.Column(db.String(50), nullable=True)
+    time_required = db.Column(db.Integer, nullable=False)
+    min_age = db.Column(db.Integer, nullable=True)
+
+
+with app.app_context():
+        db.create_all()
 
 @app.route('/')
 def homepage():
     return render_template('homepage.html')
 
+@app.route('/logout')
+def logout():
+    session['user_email'] = None
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -81,6 +91,9 @@ def signup():
     return render_template('signup.html')
 
 
+
+
+
 @app.route('/success')
 def success():
     tasks = Task.query.all()
@@ -90,7 +103,7 @@ def success():
         return redirect('/login')
 
     user = User.query.filter_by(email=user_email).first()
-    return render_template('success.html', tasks=tasks)
+    return render_template('success.html', tasks=tasks, skills=skills_array,causes=causes_array)
 
 @app.route('/forgot_password', methods=['GET', 'POST'])
 def forgot_password():
@@ -171,31 +184,37 @@ def send_verification_email(email, verification_code):
     msg.body = f'Your verification code is: {verification_code}'
     mail.send(msg)
 
-@app.route('/task_page', methods=['GET', 'POST'])
+@app.route('/needahand', methods=['GET', 'POST'])
 def need_a_hand():
     if request.method == 'POST':
-        first_name = request.form['first-name']
-        last_name = request.form['last-name']
-        dob_day = request.form['dob-day']
-        dob_month = request.form['dob-month']
-        dob_year = request.form['dob-year']
+        title = request.form['title']
+        date = request.form['date']
+        print(request.form.getlist('skills'))
         skills = ', '.join(request.form.getlist('skills[]'))
+        causes = ', '.join(request.form.getlist('causes[]'))
+
         location = request.form['location']
         additional_info = request.form['additional-info']
         time_required = request.form['time-required']
         min_age = request.form['min-age']
 
+        user_email = session['user_email']
+        online = False
+        if request.form['online'] == "online":
+            online = True
+
+
         new_task = Task(
-            first_name=first_name,
-            last_name=last_name,
-            dob_day=dob_day,
-            dob_month=dob_month,
-            dob_year=dob_year,
+            title = title,
+            causes=causes,
+            online = online,
+            date=date,
+            user_email = user_email,
             skills=skills,
             location=location,
             additional_info=additional_info,
             min_age=min_age,
-            time_required=time_required,
+            time_required=time_required
         )
 
         db.session.add(new_task)
@@ -203,9 +222,9 @@ def need_a_hand():
 
         return redirect('/success')
 
-    return render_template('a.html')
+    return render_template('task_page.html', skills=skills_array,causes=causes_array)
 
-@app.route('/success', methods=['POST'])
+@app.route('/volunteer', methods=['POST'])
 def volunteer():
     if request.method == 'POST':
         email_content = request.form.get('emailContent')
@@ -219,6 +238,5 @@ def volunteer():
             return f"Error sending email: {str(e)}"
 
 if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()
+
     app.run(debug=True)
