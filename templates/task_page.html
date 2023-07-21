@@ -4,268 +4,143 @@
   <title>Form Page</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <style>
-    .custom-box {
-      width: 80vw;
-      height: 80vh;
-    }
     body {
-      font-family: Georgia, Helvetica;
+      font-family: 'Georgia', serif;
+      background-color: #F5F5F5;
     }
 
-     #main ul {
-          list-style-type: none;
-          margin: 0;
-          padding: 0;
-          overflow: hidden;
-        }
-
-      ul {
-          list-style-type: none;
-
-     }
-
-
-     #main li a {
-            display: block;
-            color: black;
-            text-align: center;
-            padding: 35px;
-
-            text-decoration: none;
-            line-height: 40px;
-
-
-      }
-
-      .dob-inputs {
-
-        z-index:1000;
-      }
-
-
-
-
-
-      #main li {
-          float: left;
-      }
-
-      #main li a:hover {
-          color: #CCCCCC;
-
-
-      }
-
-      header img {
-        width: 75px;
-        height: 75px;
-        margin-top: 15px;
-      }
-
-
-
-    .submit-button {
-      background-color: #CCCCCC;
-      font-weight: normal;
+    .nav-bar {
+      background-color: white;
+      border-bottom: 2px solid black;
     }
+
+    .nav-title {
+      font-size: 3em;
+    }
+
+    .nav-title-orange {
+      color: #FF5F00;
+      font-size: 1.5em;
+    }
+
+    .form-label {
+      font-size: 1.2em;
+      width: 150px;
+    }
+
     .input-box {
       background-color: #CCCCCC;
       border: none;
       outline: none;
+      padding: 8px;
+    }
+
+    .submit-button {
+      background-color: #FF5F00;
+      color: #FFFFFF;
+    }
+
+    .custom-box {
+      width: 800px;
+      margin: 50px auto; /* Center the form on the page */
+      padding: 20px;
+      background-color: #FFFFFF;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+
+    .dob-inputs {
+      display: flex;
     }
 
     .gray-square {
-      width: 40px;
-      height: 40px;
-      background-color: #CCCCCC;
-    }
-    .form-label {
-      text-align: left;
-      margin-right: 1rem;
-      width: 150px;
-    }
-    .form-input {
-      width: 100%;
-      display: flex;
-      align-items: center;
+      width: 50px;
     }
 
-    header {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      height: 100px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background-color: white;
-
-     }
     .checkbox-input {
-      width: 20px;
-      height: 20px;
-      background-color: #CCCCCC;
-      border: none;
-      outline: none;
+      margin-right: 6px;
     }
-    .job-section,
-    .location-section {
-      width: 100%;
-      background-color: #CCCCCC;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      padding-left: 1rem;
-      margin-top: 2rem;
-    }
-     a {
-            transition: 0.3s;
 
-        }
-
-     #main {
-          transition: margin-left .5s;
-          padding: 20px;
-          overflow: scroll;
-        }
-
-     #title {
-
-          color: #FF5F00;
-          text-align: center;
-          padding : 35px;
-
-          line-height: 40px;
-          font-size: 30px;
-
-
-      }
-    .job-text,
-    .location-text {
-      font-size: 20px;
-      color: #333333;
-      text-align: left;
-    }
-    .description-section {
-      margin-top: 2rem;
-      padding-left: 1rem;
-    }
-    .skills-section {
-      margin-top: 2rem;
-    }
-    .skills-option {
-      margin-right: 1rem;
+    .description-section label,
+    .form-input label {
+      margin-right: 10px;
     }
   </style>
 </head>
 <body>
-  <div id="main">
-  <header>
+  <!-- Navigation bar -->
+  <div class="flex justify-between items-center p-4 bg-gray-100">
+    <a href="http://localhost:5000/success" class="text-blue-500">Back</a>
+  </div>
 
-
-
-            <ul>
-
-                <li> <img src="https://i.imgur.com/Tyd1kFk.png" alt="Logo"> </li>
-                <li> <h2 id="title"> Lend a Hand</h2> </li>
-                <li><a href="/success">Volunteer</a></li>
-                <li><a href="/">Log out</a></li>
-
-            </ul>
-
-
-
-  </header>
-
+  <!-- Main content -->
   <div class="flex justify-center items-center h-screen">
-    <div class="custom-box bg-transparent p-8 rounded">
-      <h1 class="nav-title nav-title-orange text-3xl mb-4">Ask for a Hand</h1>
+    <div class="mt-8 custom-box mb-8">
+      <h1 class="nav-title-orange mb-4 text-2xl font-bold">Ask for a Hand</h1>
 
-      <form action="/post_task" method="POST">
-
-        <div class="job-section">
-          <span class="job-text">Job</span>
+      <!-- Form -->
+      <form action="/task_page" method="POST">
+        <div class="mb-4">
+          <label for="first-name" class="form-label">First Name:</label>
+          <input type="text" id="first-name" name="first-name" required class="input-box w-full px-3 py-2 rounded-lg">
         </div>
 
+        <div class="mb-4">
+          <label for="last-name" class="form-label">Last Name:</label>
+          <input type="text" id="last-name" name="last-name" required class="input-box w-full px-3 py-2 rounded-lg">
+        </div>
 
-        <div class="mb-4 flex">
-          <div class="form-label">Deadline of completion</div>
+        <div class="mb-4">
+          <label class="form-label">Deadline</label>
           <div class="dob-inputs">
-            <input autofocus type="number" id="day" name="day" placeholder="D">
-            <input type="number" id="month" name="month"  placeholder="M">
-            <input type="number" id="year" name="year"placeholder="YYYY">
+            <input type="text" id="dob-day" name="dob-day" required class="gray-square px-3 py-2 rounded-lg" placeholder="D">
+            <input type="text" id="dob-month" name="dob-month" required class="gray-square px-3 py-2 rounded-lg" placeholder="M">
+            <input type="text" id="dob-year" name="dob-year" required class="gray-square px-3 py-2 rounded-lg" placeholder="YYYY">
           </div>
         </div>
 
-        <div class="year-separator"></div>
 
-        <div class="mb-4 flex">
-          <div class="form-label">Organization?</div>
+
+        <div class="mb-4">
+          <label class="form-label">Skills:</label>
           <div class="form-input">
-            <input type="checkbox" id="organization" name="organization" class="checkbox-input">
+            <input type="checkbox" id="physical" name="skills[]" value="physical" class="checkbox-input skills-option">
+            <label for="physical">Physical</label>
+            <input type="checkbox" id="it" name="skills[]" value="it" class="checkbox-input skills-option">
+            <label for="it">IT</label>
+            <input type="checkbox" id="creative" name="skills[]" value="creative" class="checkbox-input skills-option">
+            <label for="creative">Creative</label>
+            <input type="checkbox" id="design" name="skills[]" value="design" class="checkbox-input skills-option">
+            <label for="design">Design</label>
           </div>
         </div>
 
-
-
-        <label for="label_task"> Title: </label>
-        <input name="label_task" type="text" id="label_task" required>
-
-        <div class="description-section">
-          <div class="form-label">Description:</div>
-          <textarea id="description" name="description" class="input-box w-full rounded-lg" rows="5" required></textarea>
+        <div class="mb-4">
+          <label class="form-label">Location:</label>
+          <input type="text" id="location" name="location" required class="input-box w-full px-3 py-2 rounded-lg">
         </div>
 
-        <div class="skills-section">
-          <div class="form-label">Skills:</div>
-          <br>
-          <div class="form-input">
-            {% for i in range(skills|length) %}
-            <label for="skill">{{skills[i]}}</label>
-              <input type="checkbox"  id="skill" name="{{skills[i]}}" value="{{skills[i]}}" class="checkbox-input skills-option">
-
-
-          {% endfor %}
-          </div>
-        </div>
-        <br>
-
-        <div class="cause_container">
-          <div class="form-label">Causes:</div>
-          <br>
-
-          {% for i in range(causes|length) %}
-            <label for="cause">{{causes[i]}} </label>
-            <input type="checkbox"  id="cause" name="{{causes[i]}}" value="{{causes[i]}}" class="checkbox-input skills-option">
-
-
-          {% endfor %}
-
-
-
+        <div class="mb-4">
+          <label for="time-required" class="form-label">Time Required (in minutes):</label>
+          <input type="number" id="time-required" name="time-required" required class="input-box w-full px-3 py-2 rounded-lg">
         </div>
 
-        <br>
-
-
-        <label for="cause">Online: </label>
-        <input type="checkbox"  id="online" name="online" value="online" class="checkbox-input skills-option">
-
-
-        <div class="location-section">
-          <span class="location-text">Location</span>
-
+        <div class="mb-4">
+          <label for="min-age" class="form-label">Minimum age:</label>
+          <input type="number" id="min-age" name="min-age" required class="input-box w-full px-3 py-2 rounded-lg">
         </div>
 
-        <input placeholder="Address line 1" type="text" name="address1" id="address1">
+        <div class="mb-4">
+          <label class="form-label">Description (max 300 characters):</label>
+          <textarea id="additional-info" name="additional-info" class="input-box w-full rounded-lg px-3 py-2" rows="3" maxlength="300"></textarea>
+        </div>
 
-        <input placeholder="Address line 2" type="text" name="address2" id="address2">
-
-        <input type="submit" value="Submit" class="submit-button bg-blue-500 hover:bg-gray-700 text-white py-2 px-4 rounded mt-6">
+        <input type="submit" value="Submit" class="submit-button py-2 px-4 rounded mt-6">
       </form>
     </div>
-  </div>
   </div>
 
 </body>
 </html>
+
