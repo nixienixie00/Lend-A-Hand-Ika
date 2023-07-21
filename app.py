@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail, Message
 import secrets
 import string
-import datetime
+from datetime import date
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
@@ -53,6 +53,7 @@ def homepage():
 @app.route('/logout')
 def logout():
     session['user_email'] = None
+    return render_template('homepage.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -97,7 +98,9 @@ def signup():
 
 @app.route('/success')
 def success():
-    tasks = Task.query.all()
+    tasks = Task.query.filter(Task.date >= date.today()).all()
+
+
     user_email = session.get('user_email')
 
     if not user_email:
@@ -232,7 +235,8 @@ def volunteer():
     if request.method == 'POST':
         email_content = request.form.get('emailContent')
 
-        msg = Message('Volunteer Alert', recipients=['onawhim1612@gmail.com'])
+        msg = Message('Volunteer Alert', recipients=[request.form.get('email_address')])
+
         msg.body = email_content
         try:
             mail.send(msg)

@@ -536,14 +536,15 @@
 
     <div class="popup" id="popup">
     <a href="javascript:void(0)" class="closebtn" onclick="hidePopup()">&times;</a>
-    <h3>Label</h3>
-    <p>More description</p>
+    <h3 id="label">Label</h3>
+    <p id="desc">More description</p>
     <form id="emailForm" method="post" action="/volunteer">
         <div id="email" contenteditable="true">
             Hello, <br> <br> I saw your micro-volunteering opportunity on Lend a Hand, and I am willing to help out.
-            My name is {{ name }}. I have the required skills you are looking for ().
+            My name is {{ name }}. I have the required skills you are looking for (skillsLIST).
             Please contact me at {{ email }}. <br><br> Thank you! <br> {{ name }}
         </div>
+        <input type="hidden" id="email_address" name="email_address">
         <br>
         <p style="color: #FF5F00; text-align: left; font-size: 12px; margin-left:10px"> This email will be sent to the organization.
             You can add more information if you would like.
@@ -586,11 +587,9 @@
                     <p>Location: {{ task.location }}</p>
                 {% endif %}
 
-                <p>Description: {{ task.additional_info }}</p>
-
                 <p>Time Required(minutes): {{ task.time_required}}</p>
                 <p>Minimum Age Requirement: {{task.min_age}}</p>
-                <button class="moreinfo" href="#" onclick="showPopup()">More info</button>
+                <button class="moreinfo" href="#" onclick="showPopup('{{task.title}}','{{task.additional_info}}', '{{task.user_email}}', '{{task.skills}}')">More info</button>
             </div>
             {% endfor %}
         </div>
@@ -607,11 +606,17 @@
             document.getElementById("main").style.marginLeft = "0";
         }
 
-        function showPopup() {
+        function showPopup(label,desc,email,skills) {
             document.getElementById("popup").style.opacity = 1;
             document.getElementById("popup").style.zIndex = "10";
             document.getElementById("page-mask").style.display = "block";
             document.getElementById("page-mask").style.zIndex = "8";
+            document.getElementById("label").innerHTML = label;
+            document.getElementById("desc").innerHTML = desc;
+            document.getElementById("email_address").value = email;
+            document.getElementById("email").innerHTML = document.getElementById("email").innerHTML.replace("skillsLIST", skills)
+
+
         }
 
         function hidePopup() {
