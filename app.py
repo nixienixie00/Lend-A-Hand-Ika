@@ -195,13 +195,15 @@ def need_a_hand():
         causes = ', '.join(request.form.getlist('causes[]'))
 
         location = request.form['location']
+
         additional_info = request.form['additional-info']
         time_required = request.form['time-required']
         min_age = request.form['min-age']
 
         user_email = session['user_email']
         online = False
-        if request.form['online'] == "online":
+
+        if request.form.get('online') == "online":
             online = True
 
 

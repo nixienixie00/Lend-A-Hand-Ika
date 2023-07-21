@@ -471,8 +471,7 @@
     <div id = "mySidebar" class="sidebar">
 
 
-
-                <a href="javascript:void(0)" class="closebtn" onclick="closeSidebar()">&times;</a>
+        <a href="javascript:void(0)" class="closebtn" onclick="closeSidebar()">&times;</a>
 
 
         <button id="search-btn" onclick=""> Search </button>
@@ -577,13 +576,11 @@
                 <p>Skills required: {{ task.skills }}</p>
                 <p>Cause(s): {{ task.causes }}</p>
                 <p>Deadline: {{ task.date }}</p>
-                {% if task.online == True %}
-                <p> Location: Online </p>
-                {% endif %}
-                {% if task.online == False %}
+
                 <p>Location: {{ task.location }}</p>
-                {% endif %}
+
                 <p>Description: {{ task.additional_info }}</p>
+
                 <p>Time Required(minutes): {{ task.time_required}}</p>
                 <p>Minimum Age Requirement: {{task.min_age}}</p>
                 <button class="moreinfo" href="#" onclick="showPopup()">More info</button>
