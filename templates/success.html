@@ -542,7 +542,7 @@
         <div id="email" contenteditable="true">
             Hello, <br> <br> I saw your micro-volunteering opportunity on Lend a Hand, and I am willing to help out.
             My name is {{ name }}. I have the required skills you are looking for ().
-            Please contact me at {{ user_email }}. <br><br> Thank you! <br> {{ name }}
+            Please contact me at {{ email }}. <br><br> Thank you! <br> {{ name }}
         </div>
         <br>
         <p style="color: #FF5F00; text-align: left; font-size: 12px; margin-left:10px"> This email will be sent to the organization.
@@ -584,7 +584,7 @@
                 <p>Location: {{ task.location }}</p>
                 {% endif %}
                 <p>Description: {{ task.additional_info }}</p>
-                <p>Time Required: {{ task.time_required}}</p>
+                <p>Time Required(minutes): {{ task.time_required}}</p>
                 <p>Minimum Age Requirement: {{task.min_age}}</p>
                 <button class="moreinfo" href="#" onclick="showPopup()">More info</button>
             </div>

@@ -63,6 +63,7 @@ def login():
         user = User.query.filter_by(email=email).first()
         if user and user.password == password:
             session['user_email'] = user.email  # Store the user's email in the session
+            session['name'] = user.name
             return redirect('/success')
 
         return render_template('login.html', message='Invalid credentials')
@@ -103,7 +104,7 @@ def success():
         return redirect('/login')
 
     user = User.query.filter_by(email=user_email).first()
-    return render_template('success.html', tasks=tasks, skills=skills_array,causes=causes_array)
+    return render_template('success.html', name=user.name, email=user.email, tasks=tasks, skills=skills_array,causes=causes_array)
 
 @app.route('/forgot_password', methods=['GET', 'POST'])
 def forgot_password():
