@@ -6,7 +6,6 @@ import string
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
-app.config['SQLALCHEMY_BINDS'] = {'task': 'sqlite:///tasks.db'}
 app.config['SECRET_KEY'] = 'your-secret-key'
 app.config['MAIL_SERVER'] = 'smtp.office365.com'
 app.config['MAIL_PORT'] = 587
@@ -14,14 +13,10 @@ app.config['MAIL_USERNAME'] = 'lendahand_ika@outlook.com'
 app.config['MAIL_PASSWORD'] = 'Q#f3^eCGshT-9Nb'
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USE_SSL'] = False
-app.config['TESTING'] = False
 app.config['MAIL_DEFAULT_SENDER'] = 'lendahand_ika@outlook.com'
 
 db = SQLAlchemy(app)
 mail = Mail(app)
-causes = ['Education', 'Social Justice', 'Environment','Communities/Individuals in need']
-skills = ['Education and Mentoring', 'Graphic design', 'Communication and Outreach', 'Manual work', 'IT/Programing' ]
-
 
 
 class User(db.Model):
@@ -31,15 +26,18 @@ class User(db.Model):
     password = db.Column(db.String(50), nullable=False)
     verification_code = db.Column(db.String(10), nullable=True)
 
-
-
-
-
-
-
-
-with app.app_context():
-        db.create_all()
+class Task(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    first_name = db.Column(db.String(50), nullable=False)
+    last_name = db.Column(db.String(50), nullable=False)
+    dob_day = db.Column(db.Integer, nullable=False)
+    dob_month = db.Column(db.Integer, nullable=False)
+    dob_year = db.Column(db.Integer, nullable=False)
+    skills = db.Column(db.String(100), nullable=False)
+    location = db.Column(db.String(100), nullable=False)
+    additional_info = db.Column(db.String(300), nullable=True)
+    time_required = db.Column(db.String(50), nullable=True)
+    min_age = db.Column(db.String(50), nullable=True)
 
 @app.route('/')
 def homepage():
@@ -85,13 +83,15 @@ def signup():
 
 @app.route('/success')
 def success():
+    tasks = Task.query.all()
     user_email = session.get('user_email')
 
     if not user_email:
         return redirect('/login')
 
     user = User.query.filter_by(email=user_email).first()
-    return render_template('success.html', name=user.name, user_email=user.email)
+    return render_template('success.html', tasks=tasks)
+
 @app.route('/forgot_password', methods=['GET', 'POST'])
 def forgot_password():
     if request.method == 'POST':
@@ -136,22 +136,6 @@ def verify():
     return render_template('verify.html')
 
 
-@app.route('/volunteer', methods=['POST'])
-def volunteer():
-    results = request.form
-
-    label = results.get('label')
-    body = results.get('body')
-    print(label)
-    print(body)
-    text = 'Lend a Hand: Volunteer for ' + label
-    msg = Message(text, recipients= ['inika.agarwal@icloud.com'])
-    msg.body = body
-    mail.send(msg)
-    return render_template('success.html')
-
-
-
 @app.route('/reset_password', methods=['GET', 'POST'])
 def reset_password():
     reset_email = session.get('reset_email')
@@ -182,23 +166,59 @@ def generate_verification_code():
     return verification_code
 
 
-
-
-
 def send_verification_email(email, verification_code):
     msg = Message('Password Reset Verification Code', recipients=[email])
     msg.body = f'Your verification code is: {verification_code}'
     mail.send(msg)
 
-@app.route('/needahand')
+@app.route('/task_page', methods=['GET', 'POST'])
 def need_a_hand():
-    return render_template('task_page.html')
+    if request.method == 'POST':
+        first_name = request.form['first-name']
+        last_name = request.form['last-name']
+        dob_day = request.form['dob-day']
+        dob_month = request.form['dob-month']
+        dob_year = request.form['dob-year']
+        skills = ', '.join(request.form.getlist('skills[]'))
+        location = request.form['location']
+        additional_info = request.form['additional-info']
+        time_required = request.form['time-required']
+        min_age = request.form['min-age']
 
+        new_task = Task(
+            first_name=first_name,
+            last_name=last_name,
+            dob_day=dob_day,
+            dob_month=dob_month,
+            dob_year=dob_year,
+            skills=skills,
+            location=location,
+            additional_info=additional_info,
+            min_age=min_age,
+            time_required=time_required,
+        )
 
+        db.session.add(new_task)
+        db.session.commit()
 
+        return redirect('/success')
 
+    return render_template('a.html')
+
+@app.route('/success', methods=['POST'])
+def volunteer():
+    if request.method == 'POST':
+        email_content = request.form.get('emailContent')
+
+        msg = Message('Volunteer Alert', recipients=['onawhim1612@gmail.com'])
+        msg.body = email_content
+        try:
+            mail.send(msg)
+            return "Email sent successfully!"
+        except Exception as e:
+            return f"Error sending email: {str(e)}"
 
 if __name__ == '__main__':
-
+    with app.app_context():
+        db.create_all()
     app.run(debug=True)
-
