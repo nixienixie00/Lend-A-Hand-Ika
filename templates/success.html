@@ -172,6 +172,7 @@
         .results {
             text-align: center;
             width: 27%;
+
             background-color: #ECECEC;
             margin: 20px;
 
@@ -577,7 +578,13 @@
                 <p>Cause(s): {{ task.causes }}</p>
                 <p>Deadline: {{ task.date }}</p>
 
-                <p>Location: {{ task.location }}</p>
+                {% if task.online == True %}
+                    <p>Location: Online</p>
+                {% endif %}
+
+                {% if task.online == False %}
+                    <p>Location: {{ task.location }}</p>
+                {% endif %}
 
                 <p>Description: {{ task.additional_info }}</p>
 
