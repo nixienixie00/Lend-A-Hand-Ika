@@ -233,9 +233,8 @@
           position: fixed;
           padding: 10px;
           width: 30%;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
+          left: 25%;
+          top: 25%;
           background: white;
           border: none;
           z-index: -10;
@@ -450,6 +449,18 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
     </style>
 </head>
 <body>
@@ -460,7 +471,8 @@
 
 
 
-            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+                <a href="javascript:void(0)" class="closebtn" onclick="closeSidebar()">&times;</a>
+
 
         <button id="search-btn" onclick=""> Search </button>
 
@@ -485,11 +497,6 @@
                 </ul>
 
                 <h4> Location </h4>
-                <label class="container"> Online
-                          <input type="checkbox" id="online" onclick="range_enable()">
-                          <span class="checkmark"></span>
-                </label>
-
                 <input type="range" min="1" max="100"  oninput="progressScript()">
 
                 <div class="value">0</div>
@@ -518,129 +525,88 @@
     </div>
 
     <div class="popup" id="popup">
-        <a href="javascript:void(0)" class="closebtn" onclick="hide()">&times;</a>
-
-
-            <h3 > Label </h3>
-            <p> More description</p>
-            <div id='email' contenteditable="true">
-                Hello, <br> <br>  I saw your micro-volunteering opportunity  on Lend a Hand and I am willing to help out. My name is {{ name }}.
-                I have the required skills you are looking for ( ). Please contact me  at {{ user_email }}. <br><br>  Thank you! <br> {{ name }}
-
-
-            </div>
-            <br>
-            <p style="color: #FF5F00; text-align: left; font-size: 12px; margin-left:10px"> This email will be sent to the organisation, you can add more information if you would like. <br> A reply will then be sent to your email, please be patient while waiting. </p>
-
-
-        <form action = "/volunteer" method = "POST">
-            <input type="hidden" name="label" value="HI">
-            <input type="hidden" name="body" value="body">
-
-            <button type="submit" id = "email-btn"> Send </button>
-        </form>
+    <a href="javascript:void(0)" class="closebtn" onclick="hidePopup()">&times;</a>
+    <h3>Label</h3>
+    <p>More description</p>
+    <form id="emailForm" method="post" action="/success">
+        <div id="email" contenteditable="true">
+            Hello, <br> <br> I saw your micro-volunteering opportunity on Lend a Hand, and I am willing to help out.
+            My name is {{ name }}. I have the required skills you are looking for ().
+            Please contact me at {{ user_email }}. <br><br> Thank you! <br> {{ name }}
+        </div>
+        <br>
+        <p style="color: #FF5F00; text-align: left; font-size: 12px; margin-left:10px"> This email will be sent to the organization.
+            You can add more information if you would like.
+            A reply will then be sent to your email, please be patient while waiting. </p>
+        <button id="email-btn" onclick="sendEmail()"> Send </button>
+        <input type="hidden" id="emailContent" name="emailContent">
+    </form>
+</div>
 
     </div>
 
     <div id="main">
         <header>
-
-
-
             <ul>
-
-                <li> <img src="https://i.imgur.com/Tyd1kFk.png" alt="Logo"> </li>
-                <li> <h2 id="title"> Lend a Hand</h2> </li>
-                <li><a href="/needahand">Need a Hand?</a></li>
-                <li><a href="/">Log out</a></li>
-
+                <li><img src="https://i.imgur.com/Tyd1kFk.png" alt="Logo"></li>
+                <li><h2 id="title">Lend a Hand</h2></li>
+                <li><a href="http://localhost:5000/a">Need a Hand?</a></li>
+                <li><a href="http://localhost:5000">Log out</a></li>
             </ul>
-
-
-
         </header>
 
 
-        <div class="results-container">
+         <div class="results-container">
+            <button class="openbtn" onclick="openSidebar()">&#9776; Filter your search</button>
+            <p style="color: #FF5F00">{{ tasks | count }} results</p>
+            {% for task in tasks %}
+            <div class="results">
+                <h3>{{ task.first_name }} {{ task.last_name }}</h3>
 
 
-            <button class="openbtn" onclick="openNav()">&#9776; Filter your search</button>
-
-            <p style="color: #FF5F00"> 12 results </p>
-
-            {% for i in range(12) %}
-
-                <div class="results">
-
-                    <h3> Label </h3>
-                    <h5> Name (Individual/Org) </h5>
-
-                    <img src="https://www.pngkit.com/png/detail/72-729913_user-blank-avatar-png.png" height="25%" width="150px">
-                    <p> Skills required: </p>
-                    <p> Approximate time: </p>
-                    <p> Cause(s): </p>
-                    <p> Inperson/ Online</p>
-                    <p> X age +</p>
-                    <p> x Km away</p>
-
-
-                    <button  class="moreinfo" href="#" onclick="show()"> More info </button>
-
-                </div>
-
+                <p>Skills required: {{ task.skills }}</p>
+                <p>Deadline: {{ task.dob_day }}/{{ task.dob_month }}/{{ task.dob_year }}</p>
+                <p>Location: {{ task.location }}</p>
+                <p>Description: {{ task.additional_info }}</p>
+                <p>Time Required: {{ task.time_required}}</p>
+                <p>Minimum Age Requirement: {{task.min_age}}</p>
+                <button class="moreinfo" href="#" onclick="showPopup()">More info</button>
+            </div>
             {% endfor %}
-
         </div>
-
     </div>
 
+    <script type="text/javascript">
+        function openSidebar() {
+            document.getElementById("mySidebar").style.width = "250px";
+            document.getElementById("main").style.marginLeft = "250px";
+        }
 
+        function closeSidebar() {
+            document.getElementById("mySidebar").style.width = "0";
+            document.getElementById("main").style.marginLeft = "0";
+        }
+
+        function showPopup() {
+            document.getElementById("popup").style.opacity = 1;
+            document.getElementById("popup").style.zIndex = "10";
+            document.getElementById("page-mask").style.display = "block";
+            document.getElementById("page-mask").style.zIndex = "8";
+        }
+
+        function hidePopup() {
+            document.getElementById("popup").style.opacity = 0;
+            document.getElementById("popup").style.zIndex = "-1";
+            document.getElementById("page-mask").style.display = "none";
+            document.getElementById("page-mask").style.zIndex = "-5";
+        }
+
+        function sendEmail() {
+            const emailContent = document.getElementById("email").textContent;
+            document.getElementById("emailContent").value = emailContent;
+            document.getElementById("emailForm").submit();
+        }
+    </script>
 
 </body>
-
-    <script type="text/javascript">
-            $(document).ready(function () {
-                $('.dropdown-toggle').dropdown();
-            });
-
-            function openNav() {
-              document.getElementById("mySidebar").style.width = "250px";
-              document.getElementById("main").style.marginLeft = "250px";
-            }
-
-            function closeNav() {
-              document.getElementById("mySidebar").style.width = "0";
-              document.getElementById("main").style.marginLeft = "0";
-            }
-
-
-
-
-
-            function show() {
-                document.getElementById("popup").style.opacity = 1;
-                document.getElementById("popup").style.zIndex = "10";
-                document.getElementById("page-mask").style.display = "block";
-                document.getElementById("page-mask").style.zIndex = "8";
-
-
-
-            }
-            function hide() {
-                document.getElementById("popup").style.opacity = 0;
-                document.getElementById("popup").style.zIndex = "-1";
-                document.getElementById("page-mask").style.display = "none";
-                document.getElementById("page-mask").style.zIndex = "-5";
-
-
-            }
-
-
-
-
-
-
-
-   </script>
-
 </html>
