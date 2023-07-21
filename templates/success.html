@@ -19,6 +19,11 @@
           overflow: hidden;
         }
 
+        ul {
+            list-style-type: none;
+
+        }
+
         body {
            font-family: Georgia, Helvetica;
         }
@@ -31,7 +36,7 @@
             padding: 35px;
 
             text-decoration: none;
-            line-height: 45px;
+            line-height: 40px;
 
 
         }
@@ -42,7 +47,7 @@
             text-align: center;
             padding : 35px;
 
-            line-height: 45px;
+            line-height: 40px;
 
 
         }
@@ -54,14 +59,14 @@
         }
 
         #main li a:hover {
-          background-color: #CCCCCC;
+            color: #CCCCCC;
 
 
         }
 
         header img {
-          width: 100px;
-          height: 100px;
+          width: 75px;
+          height: 75px;
           margin-top: 15px;
         }
 
@@ -74,15 +79,16 @@
           left: 0;
           background-color: #CCCCCC;
           overflow-x: hidden;
-          padding-top: 60px;
-          transition: 0.5s;
+          padding-top: 50px;
+          transition: 0.25s;
         }
 
 
         .sidebar a {
-          padding: 8px 8px 8px 32px;
+
           text-decoration: none;
-          font-size: 25px;
+          font-size: 20px;
+          margin-top: 3%;
           color: #818181;
           display: block;
           transition: 0.3s;
@@ -91,6 +97,13 @@
 
         .sidebar a:hover {
           color: #CCCCCC;
+
+        }
+
+        .sidebar input {
+            margin: 10px;
+            border-radius: 5px;
+            outline: none;
         }
 
 
@@ -98,7 +111,7 @@
           position: absolute;
           top: 0;
           right: 25px;
-          font-size: 36px;
+          font-size: 35px;
           margin-left: 50px;
         }
 
@@ -106,13 +119,18 @@
 
 
         .openbtn {
-          font-size: 20px;
+          font-size: 16px;
           cursor: pointer;
           background-color: #white;
           color: black;
           padding: 10px 15px;
           border: none;
           margin-top: 90px
+
+        }
+
+        .openbtn:hover {
+            background-color: #FF5F00;
 
         }
 
@@ -135,6 +153,8 @@
 
 
 
+
+
         header {
           position: fixed;
           top: 0;
@@ -144,44 +164,16 @@
           align-items: center;
           justify-content: space-between;
           background-color: white;
+
          }
 
 
-         .slider {
-          -webkit-appearance: none;
-          width: 100%;
-          height: 15px;
-          border-radius: 5px;
-          background: white;
-          outline: none;
-          opacity: 0.7;
-          -webkit-transition: .2s;
-          transition: opacity .2s;
-        }
-
-        .slider::-webkit-slider-thumb {
-          -webkit-appearance: none;
-          appearance: none;
-          width: 25px;
-          height: 25px;
-          border-radius: 50%;
-          background: black;
-          cursor: pointer;
-        }
-
-        .slider::-moz-range-thumb {
-          width: 25px;
-          height: 25px;
-          border-radius: 50%;
-          background: black;
-          cursor: pointer;
-        }
 
         .results {
             text-align: center;
-            width: 30%;
+            width: 27%;
             background-color: #ECECEC;
-            margin: 25px;
+            margin: 20px;
 
             float: left;
             border-radius: 10px 10px 10px 10px;
@@ -192,6 +184,13 @@
         .results h3{
             margin-top: 10px;
             color: #FF5F00;
+            font-size: 25px;
+        }
+
+        .sidebar h4 {
+            margin: 10px;
+            color: black;
+            text-align: left
 
         }
 
@@ -207,8 +206,8 @@
 
         }
 
-        #moreinfo {
-          font-size: 20px;
+        .moreinfo {
+          font-size: 15px;
           cursor: pointer;
           color: black;
           border: none;
@@ -216,72 +215,60 @@
           margin-bottom: 27px;
           background-color: white;
 
-        }
-
-        button:hover {
-            background-color: #CCCCCC;
 
         }
 
-        #moreinfo:hover {
-            background-color: #CCCCCC;
+
+
+        .results-container button.moreinfo:hover {
+            background-color: #FF5F00;
         }
 
         button {
             transition: 0.3s;
-
         }
 
         .popup {
-          display: none;
+          display: block;
           position: fixed;
           padding: 10px;
           width: 30%;
-          left: 25%;
           top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
           background: white;
           border: none;
-          z-index: 20;
-          transition: 0.3s;
+          z-index: -10;
+          opacity: 0;
+          text-align: center;
+
+          transition: 0.2s;
 
 
         }
 
 
 
-        #popup:after {
-          position: fixed;
-          content: "";
-          top: 0;
-          left: 0;
-          bottom: 0;
-          right: 0;
-          background: rgba(0,0,0,0.5);
-          z-index: -2;
-        }
 
-        #popup:before {
-          position: absolute;
-          content: "";
-          top: 0;
-          left: 0;
-          bottom: 0;
-          right: 0;
-          background: #FFF;
-          z-index: -1;
-        }
 
         .popup a{
-            display: block;
-            margin-left: 90%;
-            background-color: transparent;
-            font-size: 30px;
-            color: #CCCCCC;
-            text-decoration: none;
-            border: none;
-            outline: none;
-            cursor: pointer;
+              padding: 8px 8px 8px 32px;
+              margin-left: 80%;
+              text-decoration: none;
+              font-size: 20px;
+              color: #818181;
+              display: block;
+              transition: 0.3s;
         }
+
+
+
+        .popup h3 {
+            color: #FF5F00
+
+        }
+
+
 
         a {
             transition: 0.3s;
@@ -290,9 +277,12 @@
 
 
 
-        .popup input{
-            width: 75%;
-            height: 65%;
+        #email{
+            background-color: #ECECEC;
+            text-align: left;
+            margin-left: 10px;
+            margin-right: 10px;
+
 
         }
 
@@ -300,10 +290,163 @@
             color: white;
         }
 
+        #email-btn {
+
+            font-size: 15px;
+            cursor: pointer;
+            background-color: #ECECEC;
+            color: black;
+            margin: 15px;
+            border: none;
+            padding: 10px 15px;
+        }
+
+        #email-btn:hover {
+            background-color: #FF5F00;
+        }
+
+        input[type="range"] {
+
+          -webkit-appearance: none;
+          appearance: none;
+
+          width: 75%;
+          cursor: pointer;
+          outline: none;
+        }
+
+        input[type="range"] {
+
+          height: 15px;
+          background: #ccc;
+          border-radius: 16px;
+        }
+
+        input[type="range"]::-webkit-slider-runnable-track {
+          height: 15px;
+          background: white;
+          border-radius: 16px;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+
+          -webkit-appearance: none;
+          appearance: none;
+
+          height: 15px;
+          width: 15px;
+          background-color: #FF5F00;
+          border-radius: 50%;
+          border: 2px solid #f50;
+        }
+
+
+        #page-mask {
+          background: rgba(0,0,0,0.5);
+
+          position: fixed;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          z-index: -5;
+          display: none;
+        }
+
+        #search-btn {
+            position: absolute;
+            font-size: 15px;
+            cursor: pointer;
+            background-color: white;
+            color: black;
+            top: 0;
+            left: 25%;
+            margin: 10px;
+            border: none;
+            padding: 10px 15px;
+
+
+        }
+
+        #search-btn:hover {
+            background-color: #FF5F00;
+
+        }
+
+
+        .sidebar {
+
+            text-align: center;
+
+
+        }
+
+        .container input {
+          position: absolute;
+          opacity: 0;
+          cursor: pointer;
+          height: 0;
+          width: 0;
+        }
+
+
+        .checkmark {
+          position: absolute;
+          top: 0;
+          left: 0;
+          height: 25px;
+          width: 25px;
+          background-color: #eee;
+        }
+
+        .container {
+          display: block;
+          position: relative;
+          padding-left: 35px;
+          cursor: pointer;
+          font-size: 18px;
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          user-select: none;
+          margin: 10px;
+        }
 
 
 
+        .container:hover input ~ .checkmark {
+          background-color: white;
+        }
 
+
+        .container input:checked ~ .checkmark {
+          background-color: #FF5F00;
+        }
+
+
+        .checkmark:after {
+          content: "";
+          position: absolute;
+          display: none;
+        }
+
+
+        .container input:checked ~ .checkmark:after {
+          display: block;
+        }
+
+
+        .container .checkmark:after {
+          left: 40%;
+          top: 30%;
+          width: 20%;
+          height: 10px;
+          border: solid white;
+          border-width: 0 3px 3px 0;
+          -webkit-transform: rotate(45deg);
+          -ms-transform: rotate(45deg);
+          transform: rotate(45deg);
+        }
 
 
 
@@ -311,17 +454,67 @@
 </head>
 <body>
 
+    <div id="page-mask"> </div>
+
     <div id = "mySidebar" class="sidebar">
 
+
+
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-            <a> Duration </a>
-            <a> </a>
-            <a> Causes </a>
-            <a> Location </a>
-            <a> <input type="range" min="1" max="100" value="50" class="slider" id="myRange"> </a>
-            <a id = "demo"> </a>
-            <a> Required skills</a>
-            <a> Age </a>
+
+        <button id="search-btn" onclick=""> Search </button>
+
+            <form name="filter" onsubmit="event.preventDefault();closeNav()">
+                <h4> Duration </h4>
+                <input type="number" id="min-time" style="width: 20%">
+                <label for="min-time"> to</label>
+                <input type="number" id="max-time" style="width: 20%">
+                <label for="max-time"> minutes </label>
+
+                <h4> Causes </h4>
+
+                <ul style="display: table-row">
+                {% for i in range(6) %}
+                    <li>
+                        <label class="container"> Cause
+                          <input type="checkbox" id="cause">
+                          <span class="checkmark"></span>
+                        </label>
+                    </li>
+                {% endfor %}
+                </ul>
+
+                <h4> Location </h4>
+                <label class="container"> Online
+                          <input type="checkbox" id="online" onclick="range_enable()">
+                          <span class="checkmark"></span>
+                </label>
+                <label class="container"> In person
+                          <input type="checkbox" id="inperson">
+                          <span class="checkmark"></span>
+                 </label>
+                <input type="range" min="1" max="100"  oninput="progressScript()">
+
+                <div class="value">0</div>
+                <h4> Required skills</h4>
+                <ul style="display: table-row">
+                {% for i in range(6) %}
+                    <li>
+                        <label class="container"> Skill
+                          <input type="checkbox" id="skill">
+                          <span class="checkmark"></span>
+                        </label>
+                    </li>
+                {% endfor %}
+                </ul>
+
+
+                <h4> Age </h4>
+                <input type="number" id="age" style="width: 30%">
+                <label for="age"> years +</label>
+
+
+            </form>
 
 
 
@@ -329,13 +522,26 @@
 
     <div class="popup" id="popup">
         <a href="javascript:void(0)" class="closebtn" onclick="hide()">&times;</a>
-        <h3> Label </h3>
-        <p> More description</p>
-        <input value="Hi Name, This is name, I am happy to perform the task needed. I am x years old, and have the following skills. <br>
-            *anything else*
-            Thank you! Name email, phone number" id="email-input">
 
-        <button> Lend a Hand!</button>
+
+            <h3 > Label </h3>
+            <p> More description</p>
+            <div id='email' contenteditable="true">
+                Hello, <br> <br>  I saw your micro-volunteering opportunity  on Lend a Hand and I am willing to help out. My name is {{ name }}.
+                I have the required skills you are looking for ( ). Please contact me  at {{ user_email }}. <br><br>  Thank you! <br> {{ name }}
+
+
+            </div>
+            <br>
+            <p style="color: #FF5F00; text-align: left; font-size: 12px; margin-left:10px"> This email will be sent to the organisation, you can add more information if you would like. <br> A reply will then be sent to your email, please be patient while waiting. </p>
+
+
+        <form action = "/volunteer" method = "POST">
+            <input type="hidden" name="label" value="HI">
+            <input type="hidden" name="body" value="body">
+
+            <button type="submit" id = "email-btn"> Send </button>
+        </form>
 
     </div>
 
@@ -346,12 +552,10 @@
 
             <ul>
 
-                <li> <img src="static/logo.png" alt="Logo"> </li>
+                <li> <img src="https://i.imgur.com/Tyd1kFk.png" alt="Logo"> </li>
                 <li> <h2 id="title"> Lend a Hand</h2> </li>
-                <li><a href = "">Home</a></li>
-                <li><a href="">Volunteer</a></li>
-                <li><a href="">Need a Hand?</a></li>
-                <li><a href="">Log out</a></li>
+                <li><a href="/needahand">Need a Hand?</a></li>
+                <li><a href="http://localhost:5000">Log out</a></li>
 
             </ul>
 
@@ -383,7 +587,7 @@
                     <p> x Km away</p>
 
 
-                    <button id="moreinfo" href="#" onclick="show()"> More info </button>
+                    <button  class="moreinfo" href="#" onclick="show()"> More info </button>
 
                 </div>
 
@@ -412,22 +616,34 @@
               document.getElementById("main").style.marginLeft = "0";
             }
 
-            var slider = document.getElementById("myRange");
-            var output = document.getElementById("demo");
+
 
 
 
             function show() {
-                document.getElementById("popup").style.display ='block';
+                document.getElementById("popup").style.opacity = 1;
+                document.getElementById("popup").style.zIndex = "10";
+                document.getElementById("page-mask").style.display = "block";
+                document.getElementById("page-mask").style.zIndex = "8";
+
+
+
             }
             function hide() {
-                document.getElementById("popup").style.display ='none';
+                document.getElementById("popup").style.opacity = 0;
+                document.getElementById("popup").style.zIndex = "-1";
+                document.getElementById("page-mask").style.display = "none";
+                document.getElementById("page-mask").style.zIndex = "-5";
+
+
             }
 
 
-            slider.onchange = function() {
-              output.innerHTML = "Up to " + this.value + "km away";
-            }
+
+
+
+
+
    </script>
 
 </html>

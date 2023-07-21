@@ -1,21 +1,27 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, session
 from flask_sqlalchemy import SQLAlchemy
+from flask_mail import Mail, Message
 import secrets
 import string
-from flask_mail import Mail, Message
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'  # SQLite database file
-app.config['SECRET_KEY'] = ''  # Add a secret key
-app.config['MAIL_SERVER'] = ''
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+app.config['SQLALCHEMY_BINDS'] = {'task': 'sqlite:///tasks.db'}
+app.config['SECRET_KEY'] = 'your-secret-key'
+app.config['MAIL_SERVER'] = 'smtp.office365.com'
 app.config['MAIL_PORT'] = 587
-app.config['MAIL_USERNAME'] = ''
-app.config['MAIL_PASSWORD'] = ''
+app.config['MAIL_USERNAME'] = 'lendahand_ika@outlook.com'
+app.config['MAIL_PASSWORD'] = 'Q#f3^eCGshT-9Nb'
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USE_SSL'] = False
+app.config['TESTING'] = False
+app.config['MAIL_DEFAULT_SENDER'] = 'lendahand_ika@outlook.com'
 
 db = SQLAlchemy(app)
 mail = Mail(app)
+causes = ['Education', 'Social Justice', 'Environment','Communities/Individuals in need']
+skills = ['Education and Mentoring', 'Graphic design', 'Communication and Outreach', 'Manual work', 'IT/Programing' ]
+
 
 
 class User(db.Model):
@@ -23,7 +29,17 @@ class User(db.Model):
     name = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(50), unique=True, nullable=False)
     password = db.Column(db.String(50), nullable=False)
+    verification_code = db.Column(db.String(10), nullable=True)
 
+
+
+
+
+
+
+
+with app.app_context():
+        db.create_all()
 
 @app.route('/')
 def homepage():
@@ -38,7 +54,8 @@ def login():
 
         user = User.query.filter_by(email=email).first()
         if user and user.password == password:
-            return redirect('/success?name=' + user.name)
+            session['user_email'] = user.email  # Store the user's email in the session
+            return redirect('/success')
 
         return render_template('login.html', message='Invalid credentials')
 
@@ -52,7 +69,6 @@ def signup():
         email = request.form.get('email')
         password = request.form.get('password')
 
-        # Check if the email is already registered
         existing_user = User.query.filter_by(email=email).first()
         if existing_user:
             return render_template('signup.html', message='Account with email already exists')
@@ -61,69 +77,128 @@ def signup():
         db.session.add(new_user)
         db.session.commit()
 
-        return redirect('/success?name=' + name)
+        session['user_email'] = email  # Store the user's email in the session
+        return redirect('/success')
 
     return render_template('signup.html')
 
 
 @app.route('/success')
 def success():
-    name = request.args.get('name')
-    return render_template('success.html', name=name)
+    user_email = session.get('user_email')
 
+    if not user_email:
+        return redirect('/login')
+
+    user = User.query.filter_by(email=user_email).first()
+    return render_template('success.html', name=user.name, user_email=user.email)
 @app.route('/forgot_password', methods=['GET', 'POST'])
 def forgot_password():
     if request.method == 'POST':
         email = request.form.get('email')
 
-        # Check if the email exists in the database
         user = User.query.filter_by(email=email).first()
         if user:
-            # Generate a secure token
-            token = generate_token()
-
-
-            user.token = token
+            # Generate a verification code
+            verification_code = generate_verification_code()
+            user.verification_code = verification_code
             db.session.commit()
 
+            # Send the verification email
+            send_verification_email(user.email, verification_code)
 
-            send_reset_email(user.email, token)
+            session['user_email'] = user.email  # Store the user's email in the session for verification
 
-        return redirect('/')
+            return redirect('/verify')
+
+        return render_template('forgot_password.html', message='Email not found')
 
     return render_template('forgot_password.html')
 
-def generate_token():
-    alphabet = string.ascii_letters + string.digits
-    return ''.join(secrets.choice(alphabet) for _ in range(32))
 
-def send_reset_email(email, token):
-    reset_link = f"http://example.com/reset_password?token={token}"
-    msg = Message("Password Reset Request", sender="noreply@example.com", recipients=[email])
-    msg.body = f"Please click the link below to reset your password:\n\n{reset_link}"
+@app.route('/verify', methods=['GET', 'POST'])
+def verify():
+    user_email = session.get('user_email')
+
+    if not user_email:
+        return redirect('/forgot_password')
+
+    if request.method == 'POST':
+        verification_code = request.form.get('verification_code')
+
+        user = User.query.filter_by(email=user_email).first()
+        if user and user.verification_code == verification_code:
+            session['reset_email'] = user.email  # Store the user's email in the session for password reset
+            return redirect('/reset_password')
+
+        return render_template('verify.html', message='Invalid verification code')
+
+    return render_template('verify.html')
+
+
+@app.route('/volunteer', methods=['POST'])
+def volunteer():
+    results = request.form
+
+    label = results.get('label')
+    body = results.get('body')
+    print(label)
+    print(body)
+    text = 'Lend a Hand: Volunteer for ' + label
+    msg = Message(text, recipients= ['inika.agarwal@icloud.com'])
+    msg.body = body
     mail.send(msg)
+    return render_template('success.html')
+
+
 
 @app.route('/reset_password', methods=['GET', 'POST'])
 def reset_password():
-    token = request.args.get('token')
+    reset_email = session.get('reset_email')
+
+    if not reset_email:
+        return redirect('/forgot_password')
 
     if request.method == 'POST':
-        new_password = request.form.get('password')
+        password = request.form.get('password')
 
-        # Find the user with the provided token
-        user = User.query.filter_by(token=token).first()
-
+        user = User.query.filter_by(email=reset_email).first()
         if user:
-            # Update the password
-            user.password = new_password
-            user.token = None  # Clear the token
+            user.password = password
+            user.verification_code = None  # Clear the verification code after successful password reset
             db.session.commit()
+            session.pop('reset_email', None)  # Remove the reset_email from the session
+            return redirect('/success?name=' + user.name)
 
-            return redirect('/success')
+        return render_template('reset_password.html', message='Email not found')
 
-    return render_template('reset_password.html', token=token)
+    return render_template('reset_password.html')
+
+
+def generate_verification_code():
+    code_length = 6
+    characters = string.digits
+    verification_code = ''.join(secrets.choice(characters) for _ in range(code_length))
+    return verification_code
+
+
+
+
+
+def send_verification_email(email, verification_code):
+    msg = Message('Password Reset Verification Code', recipients=[email])
+    msg.body = f'Your verification code is: {verification_code}'
+    mail.send(msg)
+
+@app.route('/needahand')
+def need_a_hand():
+    return render_template('task_page.html')
+
+
+
+
 
 if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()
+
     app.run(debug=True)
+

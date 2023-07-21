@@ -1,11 +1,161 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Homepage</title>
+  <title>Landing Page</title>
+  <style>
+    /* Reset default styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* Main container */
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .logotext {
+      display: flex;
+      align-items: center;
+      font-weight: bold;
+      font-size: 24px;
+      color: #FF5F00;
+    }
+
+    .logotext img {
+      width: 40px;
+      height: 40px;
+      margin-right: 10px;
+    }
+
+    .buttons {
+      display: flex;
+    }
+
+    .login-btn,
+    .signup-btn {
+      margin-left: 10px;
+      padding: 10px 20px;
+      background-color: #f1f1f1;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    /* Main content */
+    .welcome-text {
+      text-align: center;
+      color: #050401;
+	  font-size: 2.2em;
+	  margin-bottom: 30px;
+	  font-family: 'Georgia', serif;
+    }
+
+    .short-message {
+      text-align: center;
+      font-size: 19px;
+    }
+
+    /* Slideshow */
+    .slideshow-container {
+      position: relative;
+      margin-top: 20px;
+      margin-bottom: 20px;
+      max-width: 200px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .slideshow-container img {
+      width: 100%;
+      height: auto;
+    }
+
+    /* Navigation dots */
+    .dot {
+      height: 10px;
+      width: 10px;
+      margin: 0 2px;
+      background-color: #bbb;
+      border-radius: 50%;
+      display: inline-block;
+      transition: background-color 0.6s ease;
+    }
+
+    .dot.active {
+      background-color: #717171;
+    }
+  </style>
 </head>
 <body>
-    <h1>Welcome to the Homepage</h1>
-    <a href="/login">Login</a> |
-    <a href="/signup">Signup</a>
+  <div class="container">
+    <header>
+      <div class="logotext">
+        <img src="static/logo.png" alt="Logo">
+        Lend A Hand
+      </div>
+      <div class="buttons">
+        <a href="http://localhost:5000/login"><button class="login-btn">Login</button></a>
+        <a href="http://localhost:5000/signup"><button class="signup-btn">Signup</button></a>
+      </div>
+    </header>
+    <div class="welcome-text">Welcome to Lend A Hand</div>
+    <div class="short-message">This is a short message describing the website.</div>
+
+    <!-- Slideshow -->
+    <div class="slideshow-container">
+      <img class="slideshow-image" src="https://lauriermax.com/2809/light-grey-silk.jpg" alt="Image 1">
+      <img class="slideshow-image" src="https://lauriermax.com/2809/light-grey-silk.jpg" alt="Image 2">
+      <img class="slideshow-image" src="https://lauriermax.com/2809/light-grey-silk.jpg" alt="Image 3">
+    </div>
+
+    <!-- Navigation dots -->
+    <div style="text-align:center">
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+    </div>
+  </div>
+
+  <script>
+    var slideIndex = 0;
+    showSlides();
+
+    function showSlides() {
+      var i;
+      var slides = document.getElementsByClassName("slideshow-image");
+      var dots = document.getElementsByClassName("dot");
+
+      for (i = 0; i < slides.length; i++) {
+        slides[i].style.display = "none";
+      }
+
+      slideIndex++;
+
+      if (slideIndex > slides.length) {
+        slideIndex = 1;
+      }
+
+      for (i = 0; i < dots.length; i++) {
+        dots[i].className = dots[i].className.replace(" active", "");
+      }
+
+      slides[slideIndex - 1].style.display = "block";
+      dots[slideIndex - 1].className += " active";
+
+      setTimeout(showSlides, 2000); // Change slide every 2 seconds
+    }
+  </script>
 </body>
 </html>

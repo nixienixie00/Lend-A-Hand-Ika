@@ -4,7 +4,7 @@
 	<title>Minutes for Good</title>
    <style>
        body {
-			font-family: 'Helvetica', sans-serif;
+			font-family: 'Georgia', serif;
 			background-color: #f5f5f5;
 			margin: 0;
 			padding: 0;
@@ -18,7 +18,7 @@
 
 h1 {
 			color: #050401;
-			font-size: 3em;
+			font-size: 2.2em;
 			text-align: center;
 			margin-bottom: 30px;
 			font-family: 'Georgia', serif;
@@ -38,11 +38,13 @@ p {
 		}
 
 form {
-			background-color: #ffffff;
-			padding: 30px;
-			border-radius: 8px;
-			box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
-		}
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 0;
+    border: 1px solid #cccccc;
+    border-width: 0 0 1px 0;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+}
 
 label {
 			display: block;
@@ -55,31 +57,31 @@ label {
 input[type="text"],
 input[type="email"],
 input[type="password"] {
-			display: block;
-			width: 100%;
-			padding: 10px;
-			margin-bottom: 20px;
-			border: 1px solid #cccccc;
-			border-radius: 5px;
-			font-size: 1em;
-			font-family: 'Georgia', serif;
-		}
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: none;
+    border-bottom: 1px solid #cccccc;
+    font-size: 1em;
+    font-family: 'Georgia', serif;
+}
 
 input[type="submit"] {
-			background-color: #FF5F00;
-			color: #ffffff;
-			border: none;
-			border-radius: 5px;
-			padding: 12px 20px;
-			font-size: 1.2em;
-			cursor: pointer;
-			width: 100%;
-			font-family: 'Georgia', serif;
-		}
+    background-color: #FF5F00;
+    color: #ffffff;
+    border: none;
+    border-radius: 0;
+    padding: 12px 20px;
+    font-size: 1.2em;
+    cursor: pointer;
+    width: 100%;
+    font-family: 'Georgia', serif;
+}
 
 input[type="submit"]:hover {
-			background-color: #B20600;
-		}
+    background-color: #B20600;
+}
 
 .error {
             color: #FF0000;
@@ -106,7 +108,7 @@ input[type="submit"]:hover {
 </head>
 <body>
     <div class="container">
-        <h1>Welcome to <span style="color: #FC5130;">Minutes For Good</span></h1>
+        <h1>Welcome to <span style="color: #FC5130;">Lend A Hand</span></h1>
         <p>Every Minute Matters</p>
         <form action="/signup" method="POST">
             <label for="name">Name:</label>
