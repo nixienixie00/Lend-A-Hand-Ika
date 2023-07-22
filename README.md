@@ -55,7 +55,7 @@ The application will be accessible at `http://localhost:5000`.
 
 4. **More Info:** Click the "More info" button on a Task Card to view an automated email draft expressing your interest in the volunteering opportunity. You can customize the message before sending it.
 
-5. **Filter Your Search:** Use the "Filter your Search" button to narrow down Task Cards based on specific preferences.
+5. **Filter Your Search:** Use the "Filter your Search" button to narrow down Task Cards based on specific preferences. You Can also filter based on tasks within a certain radius from your location.
 
 6. **Ask For A Hand:** To create your own volunteering opportunity, click the "Need A Hand?" button. Fill out the "Ask for A Hand" form with the title, deadline, required skills, causes, time required, minimum age, and a brief description of the task. Click "Submit" to post your task on the Home Page.
 
