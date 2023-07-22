@@ -5,6 +5,32 @@ from sqlalchemy import func, union
 import secrets
 import string
 from datetime import date
+import geopy
+from geopy import Nominatim
+from geopy import Point
+import requests
+import json
+
+
+def distance(string,string2):
+
+    locator = Nominatim(user_agent='myGeocoder')
+    location = locator.geocode(string)
+    location2 = locator.geocode(string2)
+
+    o1 = str(location.longitude) +',' + str(location.latitude)
+    o2 = str(location2.longitude) + ',' + str(location2.latitude)
+
+    x = o1 + ';' + o2
+    url = 'http://router.project-osrm.org/route/v1/driving/'
+
+    response = requests.get(url+x)
+    data = json.loads(response.content)
+
+    if response.status_code == 200:
+        return(round(data['routes'][0]['distance']/1000,1))
+
+
 
 
 app = Flask(__name__)
@@ -30,6 +56,7 @@ class User(db.Model):
     email = db.Column(db.String(50), unique=True, nullable=False)
     password = db.Column(db.String(50), nullable=False)
     verification_code = db.Column(db.String(10), nullable=True)
+    address = db.Column(db.String(100), nullable=False)
 
 class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -43,6 +70,7 @@ class Task(db.Model):
     additional_info = db.Column(db.String(300), nullable=True)
     time_required = db.Column(db.Integer, nullable=False)
     min_age = db.Column(db.Integer, nullable=True)
+
 
 
 with app.app_context():
@@ -63,10 +91,15 @@ def login():
         email = request.form.get('email')
         password = request.form.get('password')
 
+
         user = User.query.filter_by(email=email).first()
         if user and user.password == password:
             session['user_email'] = user.email  # Store the user's email in the session
             session['name'] = user.name
+
+
+
+
             return redirect('/success')
 
         return render_template('login.html', message='Invalid credentials')
@@ -80,12 +113,13 @@ def signup():
         name = request.form.get('name')
         email = request.form.get('email')
         password = request.form.get('password')
+        address = request.form.get('address')
 
         existing_user = User.query.filter_by(email=email).first()
         if existing_user:
             return render_template('signup.html', message='Account with email already exists')
 
-        new_user = User(name=name, email=email, password=password)
+        new_user = User(name=name, email=email, password=password, address=address)
         db.session.add(new_user)
         db.session.commit()
 
@@ -202,7 +236,15 @@ def success():
         return redirect('/login')
 
     user = User.query.filter_by(email=user_email).first()
-    return render_template('success.html', name=user.name, email=user.email, tasks=tasks, skills=skills_array,causes=causes_array)
+
+    distances = []
+
+    temp = Task.query.all()
+
+    for row in temp:
+        distances.append(distance(row.location, user.address))
+
+    return render_template('success.html', name=user.name, email=user.email, tasks=tasks, skills=skills_array,causes=causes_array,distances=distances)
 
 @app.route('/forgot_password', methods=['GET', 'POST'])
 def forgot_password():

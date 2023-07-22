@@ -172,6 +172,7 @@
         .results {
             text-align: center;
             width: 27%;
+            height: 53vh;
 
             background-color: #ECECEC;
             margin: 20px;
@@ -247,6 +248,8 @@
 
 
         }
+
+
 
 
 
@@ -571,26 +574,26 @@
          <div class="results-container">
             <button class="openbtn" onclick="openSidebar()">&#9776; Filter your search</button>
             <p style="color: #FF5F00">{{ tasks | count }} results</p>
-            {% for task in tasks %}
+            {% for i in range(tasks|length) %}
             <div class="results">
-                <h3>{{ task.title}}</h3>
+                <h3>{{ tasks[i].title}}</h3>
 
 
-                <p>Skills required: {{ task.skills }}</p>
-                <p>Cause(s): {{ task.causes }}</p>
-                <p>Deadline: {{ task.date }}</p>
+                <p>Skills required: {{ tasks[i].skills }}</p>
+                <p>Cause(s): {{ tasks[i].causes }}</p>
+                <p>Deadline: {{ tasks[i].date }}</p>
 
-                {% if task.online == True %}
+                {% if tasks[i].online == True %}
                     <p>Location: Online</p>
                 {% endif %}
 
-                {% if task.online == False %}
-                    <p>Location: {{ task.location }}</p>
+                {% if tasks[i].online == False %}
+                    <p>Location: {{ distances[i] }} km away</p>
                 {% endif %}
 
-                <p>Time Required(minutes): {{ task.time_required}}</p>
-                <p>Minimum Age Requirement: {{task.min_age}}</p>
-                <button class="moreinfo" href="#" onclick="showPopup('{{task.title}}','{{task.additional_info}}', '{{task.user_email}}', '{{task.skills}}')">More info</button>
+                <p>Time Required(minutes): {{ tasks[i].time_required}}</p>
+                <p>Minimum Age Requirement: {{tasks[i].min_age}}</p>
+                <button class="moreinfo" href="#" onclick="showPopup('{{tasks[i].title}}','{{tasks[i].additional_info}}', '{{tasks[i].user_email}}', '{{tasks[i].skills}}')">More info</button>
             </div>
             {% endfor %}
         </div>
