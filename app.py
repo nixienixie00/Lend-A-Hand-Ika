@@ -153,13 +153,15 @@ def filter():
 
 
     location = 100000
-    if results.get('inperson') == 'inperson':
+    if len(results.get('distance')) > 0:
         location = 0
 
 
 
 
-    if (location == 10000) and (online == False):
+
+
+    if (location == 100000) and (online == False):
         location = 0
         online = True
 
@@ -211,19 +213,21 @@ def filter():
     distances = []
     distance= results.get('distance')
     if location == 0:
-        if len(distance) == 0:
-            distance= 150
+
         for task in tasks:
             if task.online == False:
                 if len(task.location) == 0:
                     distances.append("N/A")
                 else:
                     d = distance_func(task.location, session['address'])
+                    if len(distance) == 0:
+                        distance = 150
                     if d > int(distance):
 
                         tasks.remove(task)
                     else:
                         distances.append(d)
+
             else:
                 distances.append(0)
 
