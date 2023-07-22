@@ -137,8 +137,13 @@ def filter():
     mintime = results.get('min-time')
     maxtime = results.get('max-time')
 
+
+
     if len(age) == 0:
         age = 0
+
+
+
     if len(maxtime) == 0:
         maxtime = 100000000
     if len(mintime) == 0:
@@ -363,8 +368,9 @@ def need_a_hand():
 
         additional_info = request.form['additional-info']
         time_required = request.form['time-required']
-        min_age = request.form.get('min_age')
-        if min_age == None:
+        min_age = request.form.get('min-age')
+
+        if len(min_age) == 0:
             min_age = 0
 
 
