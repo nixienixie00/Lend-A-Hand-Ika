@@ -172,6 +172,8 @@
         .results {
             text-align: center;
             width: 27%;
+            height: 55vh;
+
             background-color: #ECECEC;
             margin: 20px;
 
@@ -233,8 +235,8 @@
           position: fixed;
           padding: 10px;
           width: 30%;
-          top: 50%;
           left: 50%;
+          top: 50%;
           transform: translate(-50%, -50%);
           background: white;
           border: none;
@@ -246,6 +248,8 @@
 
 
         }
+
+
 
 
 
@@ -450,6 +454,18 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
     </style>
 </head>
 <body>
@@ -459,25 +475,26 @@
     <div id = "mySidebar" class="sidebar">
 
 
+        <a href="javascript:void(0)" class="closebtn" onclick="closeSidebar()">&times;</a>
 
-            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
 
-        <button id="search-btn" onclick=""> Search </button>
 
-            <form name="filter" onsubmit="event.preventDefault();closeNav()">
+
+            <form name="filter" method="post" action="/filter">
+                <button id="search-btn" type="submit"> Search </button>
                 <h4> Duration </h4>
-                <input type="number" id="min-time" style="width: 20%">
+                <input type="number" name="min-time" id="min-time" style="width: 20%">
                 <label for="min-time"> to</label>
-                <input type="number" id="max-time" style="width: 20%">
+                <input type="number" name="max-time" id="max-time" style="width: 20%">
                 <label for="max-time"> minutes </label>
 
                 <h4> Causes </h4>
 
                 <ul style="display: table-row">
-                {% for i in range(6) %}
+                {% for i in range(causes|length) %}
                     <li>
-                        <label class="container"> Cause
-                          <input type="checkbox" id="cause">
+                        <label class="container"> {{causes[i]}}
+                          <input type="checkbox" name = "causes" value = "{{causes[i]}}" id="cause">
                           <span class="checkmark"></span>
                         </label>
                     </li>
@@ -485,23 +502,23 @@
                 </ul>
 
                 <h4> Location </h4>
-                <label class="container"> Online
-                          <input type="checkbox" id="online" onclick="range_enable()">
+                 <label class="container"> Online
+                          <input type="checkbox" name = "online" value = "online" id="online">
                           <span class="checkmark"></span>
-                </label>
-                <label class="container"> In person
-                          <input type="checkbox" id="inperson">
-                          <span class="checkmark"></span>
-                 </label>
-                <input type="range" min="1" max="100"  oninput="progressScript()">
+                        </label>
 
-                <div class="value">0</div>
+
+                 <label for="distance"> Up to </label>
+                <input type="number" max="150" name="distance" id="distance" style="width: 30%">
+                <label for="distance"> km away</label>
+
+
                 <h4> Required skills</h4>
                 <ul style="display: table-row">
-                {% for i in range(6) %}
+                {% for i in range(skills|length) %}
                     <li>
-                        <label class="container"> Skill
-                          <input type="checkbox" id="skill">
+                        <label class="container"> {{skills[i]}}
+                          <input type="checkbox" id="skill" name = "skills" value = "{{skills[i]}}">
                           <span class="checkmark"></span>
                         </label>
                     </li>
@@ -510,7 +527,7 @@
 
 
                 <h4> Age </h4>
-                <input type="number" id="age" style="width: 30%">
+                <input type="number" name="age" id="age" style="width: 30%">
                 <label for="age"> years +</label>
 
 
@@ -521,129 +538,103 @@
     </div>
 
     <div class="popup" id="popup">
-        <a href="javascript:void(0)" class="closebtn" onclick="hide()">&times;</a>
-
-
-            <h3 > Label </h3>
-            <p> More description</p>
-            <div id='email' contenteditable="true">
-                Hello, <br> <br>  I saw your micro-volunteering opportunity  on Lend a Hand and I am willing to help out. My name is {{ name }}.
-                I have the required skills you are looking for ( ). Please contact me  at {{ user_email }}. <br><br>  Thank you! <br> {{ name }}
-
-
-            </div>
-            <br>
-            <p style="color: #FF5F00; text-align: left; font-size: 12px; margin-left:10px"> This email will be sent to the organisation, you can add more information if you would like. <br> A reply will then be sent to your email, please be patient while waiting. </p>
-
-
-        <form action = "/volunteer" method = "POST">
-            <input type="hidden" name="label" value="HI">
-            <input type="hidden" name="body" value="body">
-
-            <button type="submit" id = "email-btn"> Send </button>
-        </form>
+    <a href="javascript:void(0)" class="closebtn" onclick="hidePopup()">&times;</a>
+    <h3 id="label">Label</h3>
+    <p id="desc">More description</p>
+    <form id="emailForm" method="post" action="/volunteer">
+        <div id="email" contenteditable="true">
+            Hello, <br> <br> I saw your micro-volunteering opportunity on Lend a Hand, and I am willing to help out.
+            My name is {{ name }}. I have the required skills you are looking for (skillsLIST).
+            Please contact me at {{ email }}. <br><br> Thank you! <br> {{ name }}
+        </div>
+        <input type="hidden" id="email_address" name="email_address">
+        <br>
+        <p style="color: #FF5F00; text-align: left; font-size: 12px; margin-left:10px"> This email will be sent to the organization.
+            You can add more information if you would like.
+            A reply will then be sent to your email, please be patient while waiting. </p>
+        <button id="email-btn" onclick="sendEmail()"> Send </button>
+        <input type="hidden" id="emailContent" name="emailContent">
+    </form>
+</div>
 
     </div>
 
     <div id="main">
         <header>
-
-
-
             <ul>
-
-                <li> <img src="https://i.imgur.com/Tyd1kFk.png" alt="Logo"> </li>
-                <li> <h2 id="title"> Lend a Hand</h2> </li>
+                <li><img src="static/logo.png" alt="Logo"></li>
+                <li><h2 id="title">Lend a Hand</h2></li>
                 <li><a href="/needahand">Need a Hand?</a></li>
-                <li><a href="http://localhost:5000">Log out</a></li>
-
+                <li><a href="/logout">Log out</a></li>
             </ul>
-
-
-
         </header>
 
 
-        <div class="results-container">
+         <div class="results-container">
+            <button class="openbtn" onclick="openSidebar()">&#9776; Filter your search</button>
+            <p style="color: #FF5F00">{{ tasks | count }} results</p>
+            {% for i in range(tasks|length) %}
+            <div class="results">
+                <h3>{{ tasks[i].title}}</h3>
 
 
-            <button class="openbtn" onclick="openNav()">&#9776; Filter your search</button>
+                <p>Skills required: {{ tasks[i].skills }}</p>
+                <p>Cause(s): {{ tasks[i].causes }}</p>
+                <p>Deadline: {{ tasks[i].date }}</p>
 
-            <p style="color: #FF5F00"> x results </p>
+                {% if tasks[i].online == True %}
+                    <p>Location: Online</p>
+                {% endif %}
 
-            {% for i in range(12) %}
+                {% if tasks[i].online == False %}
+                    <p>Location: {{ distances[i] }} km away</p>
+                {% endif %}
 
-                <div class="results">
-
-                    <h3> Label </h3>
-                    <h5> Name (Individual/Org) </h5>
-
-                    <img src="https://www.pngkit.com/png/detail/72-729913_user-blank-avatar-png.png" height="25%" width="150px">
-                    <p> Skills required: </p>
-                    <p> Approximate time: </p>
-                    <p> Cause(s): </p>
-                    <p> Inperson/ Online</p>
-                    <p> X age +</p>
-                    <p> x Km away</p>
-
-
-                    <button  class="moreinfo" href="#" onclick="show()"> More info </button>
-
-                </div>
-
+                <p>Time Required(minutes): {{ tasks[i].time_required}}</p>
+                <p>Minimum Age Requirement: {{tasks[i].min_age}}</p>
+                <button class="moreinfo" href="#" onclick="showPopup('{{tasks[i].title}}','{{tasks[i].additional_info}}', '{{tasks[i].user_email}}', '{{tasks[i].skills}}')">More info</button>
+            </div>
             {% endfor %}
-
         </div>
-
     </div>
 
+    <script type="text/javascript">
+        function openSidebar() {
+            document.getElementById("mySidebar").style.width = "250px";
+            document.getElementById("main").style.marginLeft = "250px";
+        }
 
+        function closeSidebar() {
+            document.getElementById("mySidebar").style.width = "0";
+            document.getElementById("main").style.marginLeft = "0";
+        }
+
+        function showPopup(label,desc,email,skills) {
+            document.getElementById("popup").style.opacity = 1;
+            document.getElementById("popup").style.zIndex = "10";
+            document.getElementById("page-mask").style.display = "block";
+            document.getElementById("page-mask").style.zIndex = "8";
+            document.getElementById("label").innerHTML = label;
+            document.getElementById("desc").innerHTML = desc;
+            document.getElementById("email_address").value = email;
+            document.getElementById("email").innerHTML = document.getElementById("email").innerHTML.replace("skillsLIST", skills)
+
+
+        }
+
+        function hidePopup() {
+            document.getElementById("popup").style.opacity = 0;
+            document.getElementById("popup").style.zIndex = "-1";
+            document.getElementById("page-mask").style.display = "none";
+            document.getElementById("page-mask").style.zIndex = "-5";
+        }
+
+        function sendEmail() {
+            const emailContent = document.getElementById("email").textContent;
+            document.getElementById("emailContent").value = emailContent;
+            document.getElementById("emailForm").submit();
+        }
+    </script>
 
 </body>
-
-    <script type="text/javascript">
-            $(document).ready(function () {
-                $('.dropdown-toggle').dropdown();
-            });
-
-            function openNav() {
-              document.getElementById("mySidebar").style.width = "250px";
-              document.getElementById("main").style.marginLeft = "250px";
-            }
-
-            function closeNav() {
-              document.getElementById("mySidebar").style.width = "0";
-              document.getElementById("main").style.marginLeft = "0";
-            }
-
-
-
-
-
-            function show() {
-                document.getElementById("popup").style.opacity = 1;
-                document.getElementById("popup").style.zIndex = "10";
-                document.getElementById("page-mask").style.display = "block";
-                document.getElementById("page-mask").style.zIndex = "8";
-
-
-
-            }
-            function hide() {
-                document.getElementById("popup").style.opacity = 0;
-                document.getElementById("popup").style.zIndex = "-1";
-                document.getElementById("page-mask").style.display = "none";
-                document.getElementById("page-mask").style.zIndex = "-5";
-
-
-            }
-
-
-
-
-
-
-
-   </script>
-
 </html>

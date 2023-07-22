@@ -4,178 +4,152 @@
   <title>Form Page</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <style>
-    .custom-box {
-      width: 80vw;
-      height: 80vh;
-    }
     body {
-      font-family: Baskerville, serif;
+      font-family: 'Georgia', serif;
+      background-color: #F5F5F5;
     }
-    .nav-button {
-      color: black !important;
-      font-weight: normal;
-      font-size: 24px;
-    }
-    .nav-title {
-      font-size: 55px;
-    }
-    .nav-title-black {
-      color: black;
-    }
-    .nav-title-orange {
-      color: #FF5F00;
-      font-size: 30px;
-    }
+
     .nav-bar {
       background-color: white;
       border-bottom: 2px solid black;
     }
-    .submit-button {
-      background-color: #CCCCCC;
-      font-weight: normal;
+
+    .nav-title {
+      font-size: 3em;
     }
+
+    .nav-title-orange {
+      color: #FF5F00;
+      font-size: 1.5em;
+    }
+
+    .form-label {
+      font-size: 1.2em;
+      width: 150px;
+    }
+
     .input-box {
       background-color: #CCCCCC;
       border: none;
       outline: none;
+      padding: 8px;
     }
-    .logo-image {
-      width: 60px;
-      height: 60px;
+
+    .submit-button {
+      background-color: #FF5F00;
+      color: #FFFFFF;
     }
-    .nav-button-container {
-      width: 20%;
+
+    .custom-box {
+      width: 800px;
+      margin: 50px auto; /* Center the form on the page */
+      padding: 20px;
+      background-color: #FFFFFF;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+
+    .dob-inputs {
       display: flex;
-      justify-content: space-between;
     }
+
     .gray-square {
-      width: 40px;
-      height: 40px;
-      background-color: #CCCCCC;
+      width: 50px;
     }
-    .form-label {
-      text-align: left;
-      margin-right: 1rem;
-      width: 150px;
-    }
-    .form-input {
-      width: 100%;
-      display: flex;
-      align-items: center;
-    }
+
     .checkbox-input {
-      width: 20px;
-      height: 20px;
-      background-color: #CCCCCC;
-      border: none;
-      outline: none;
+      margin-right: 6px;
     }
-    .job-section,
-    .location-section {
-      width: 100%;
-      background-color: #CCCCCC;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      padding-left: 1rem;
-      margin-top: 2rem;
-    }
-    .job-text,
-    .location-text {
-      font-size: 20px;
-      color: #333333;
-      text-align: left;
-    }
-    .description-section {
-      margin-top: 2rem;
-      padding-left: 1rem;
-    }
-    .skills-section {
-      margin-top: 2rem;
-    }
-    .skills-option {
-      margin-right: 1rem;
+
+    .description-section label,
+    .form-input label {
+      margin-right: 10px;
     }
   </style>
 </head>
 <body>
-  <nav class="nav-bar p-4">
-    <div class="container mx-auto flex justify-between items-center">
-      <div class="flex items-center">
-        <img src="static/logo.png" alt="Logo" class="logo-image mr-2">
-        <h1 class="nav-title nav-title-black">Lend a Hand</h1>
-      </div>
-      <div class="nav-button-container">
-        <button class="nav-button">Home</button>
-        <button class="nav-button">Need a Hand?</button>
-      </div>
-    </div>
-  </nav>
+  <!-- Navigation bar -->
+  <div class="flex justify-between items-center p-4 bg-gray-100">
+    <a href="/success" class="text-blue-500">Back</a>
+  </div>
 
+  <!-- Main content -->
   <div class="flex justify-center items-center h-screen">
-    <div class="custom-box bg-transparent p-8 rounded">
-      <h1 class="nav-title nav-title-orange text-3xl mb-4">Ask for a Hand</h1>
+    <div class="mt-8 custom-box mb-8">
+      <h1 class="nav-title-orange mb-4 text-2xl font-bold">Ask for a Hand</h1>
 
-      <form action="submit.php" method="POST">
-        <div class="mb-4 flex">
-          <div class="form-label">First Name:</div>
-          <input type="text" id="first-name" name="first-name" required class="input-box w-full px-3 py-2 rounded-lg">
+      <!-- Form -->
+      <form action="/needahand" method="POST">
+        <div class="mb-4">
+          <label for="title" class="form-label">Title</label>
+          <input type="text" id="title" name="title" required class="input-box w-full px-3 py-2 rounded-lg">
         </div>
 
-        <div class="mb-4 flex">
-          <div class="form-label">Last Name:</div>
-          <input type="text" id="last-name" name="last-name" required class="input-box w-full px-3 py-2 rounded-lg">
-        </div>
 
-        <div class="mb-4 flex">
-          <div class="form-label">Date of Birth:</div>
+        <div class="mb-4">
+          <label class="form-label">Deadline</label>
           <div class="dob-inputs">
-            <input type="text" id="dob-day" name="dob-day" required class="gray-square px-3 py-2 rounded-lg" placeholder="D">
-            <input type="text" id="dob-month" name="dob-month" required class="gray-square px-3 py-2 rounded-lg" placeholder="M">
-            <input type="text" id="dob-year" name="dob-year" required class="gray-rectangle px-3 py-2 rounded-lg" placeholder="YYYY">
+            <input type="date" id="date" name="date" required>
+
           </div>
         </div>
 
-        <div class="year-separator"></div>
 
-        <div class="mb-4 flex">
-          <div class="form-label">Organization?</div>
+
+        <div class="mb-4">
+          <label class="form-label">Skills:</label>
           <div class="form-input">
-            <input type="checkbox" id="organization" name="organization" class="checkbox-input">
+            {% for i in range(skills|length) %}
+            <input type="checkbox" id="skills[]" name="skills[]" value="{{skills[i]}}" class="checkbox-input skills-option">
+            <label for="skills[]">{{skills[i]}}</label>
+
+            {% endfor %}
+
           </div>
         </div>
 
-        <div class="job-section">
-          <span class="job-text">Job</span>
-        </div>
 
-        <div class="description-section">
-          <div class="form-label">Description:</div>
-          <textarea id="description" name="description" class="input-box w-full rounded-lg" rows="5"></textarea>
-        </div>
-
-        <div class="skills-section">
-          <div class="form-label">Skills:</div>
+        <div class="mb-4">
+          <label class="form-label">Causes:</label>
           <div class="form-input">
-            <input type="checkbox" id="physical" name="skills[]" value="physical" class="checkbox-input skills-option">
-            <label for="physical">Physical</label>
-            <input type="checkbox" id="it" name="skills[]" value="it" class="checkbox-input skills-option">
-            <label for="it">IT</label>
-            <input type="checkbox" id="creative" name="skills[]" value="creative" class="checkbox-input skills-option">
-            <label for="creative">Creative</label>
-            <input type="checkbox" id="design" name="skills[]" value="design" class="checkbox-input skills-option">
-            <label for="design">Design</label>
+             {% for i in range(causes|length) %}
+            <input type="checkbox" id="causes[]" name="causes[]" value="{{causes[i]}}" class="checkbox-input skills-option">
+            <label for="causes[]">{{causes[i]}}</label>
+
+            {% endfor %}
           </div>
         </div>
 
-        <div class="location-section">
-          <span class="location-text">Location</span>
+        <label for="online"> Online: </label>
+        <input type="checkbox" id="online" name="online" value="online">
+
+        <div class="mb-4">
+
+          <label class="form-label">Location:</label>
+          <input type="text" id="location" name="location"  class="input-box w-full px-3 py-2 rounded-lg" placeholder="Abbey Road, London, UK">
         </div>
 
-        <input type="submit" value="Submit" class="submit-button bg-blue-500 hover:bg-gray-700 text-white py-2 px-4 rounded mt-6">
+        <div class="mb-4">
+          <label for="time-required" class="form-label">Time Required (in minutes):</label>
+          <input type="number" id="time-required" name="time-required" required class="input-box w-full px-3 py-2 rounded-lg">
+        </div>
+
+        <div class="mb-4">
+          <label for="min-age" class="form-label">Minimum age:</label>
+          <input type="number" id="min-age" name="min-age"  class="input-box w-full px-3 py-2 rounded-lg">
+        </div>
+
+        <div class="mb-4">
+          <label class="form-label">Description (max 300 characters):</label>
+          <textarea id="additional-info" name="additional-info" class="input-box w-full rounded-lg px-3 py-2" rows="3" maxlength="300"></textarea>
+        </div>
+
+        <input type="submit" value="Submit" class="submit-button py-2 px-4 rounded mt-6">
       </form>
     </div>
   </div>
 
 </body>
 </html>
+
