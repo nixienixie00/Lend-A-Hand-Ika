@@ -1,9 +1,11 @@
 from flask import Flask, render_template, request, redirect, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail, Message
+from sqlalchemy import func, union
 import secrets
 import string
 from datetime import date
+
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
@@ -93,6 +95,99 @@ def signup():
     return render_template('signup.html')
 
 
+@app.route('/filter', methods=["POST"])
+def filter():
+    results = request.form
+    age = results.get('age')
+    mintime = results.get('min-time')
+    maxtime = results.get('max-time')
+
+    if len(age) == 0:
+        age = 0
+    if len(maxtime) == 0:
+        maxtime = 100000000
+    if len(mintime) == 0:
+        mintime = 0
+
+
+
+    online = False
+    if results.get('online') == 'online':
+        online = True
+
+
+
+    location = 1000000
+    if results.get('inperson') == 'inperson':
+        location = 0
+
+
+    if location > 0 and online == False:
+        location = 0
+        online = True
+
+
+    submitted_skills = request.form.getlist('skills')
+
+    tasks = Task.query.filter(Task.date >= date.today(),
+                              Task.time_required >= mintime, Task.min_age >= age, Task.time_required <= maxtime, ((func.length(Task.location) > location) | (Task.online == online)) )
+
+    submitted_causes = request.form.getlist('causes')
+
+    prev2 = None
+    if submitted_causes:
+        for cause in submitted_causes:
+            temp = Task.query.filter(Task.causes.contains(cause))
+            if prev2 is not None:
+                prev2 = prev2.union(temp)
+            else:
+                prev2 = temp
+
+
+        tasks = tasks.intersect(prev2)
+
+
+    prev = None
+    if submitted_skills:
+
+        for skill in submitted_skills:
+            temp = Task.query.filter(Task.skills.contains(skill))
+
+            if prev is not None:
+                prev = prev.union(temp)
+            else:
+                prev = temp
+
+
+
+        tasks = tasks.intersect(prev).all()
+
+    else:
+        tasks = tasks.all()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    user_email = session.get('user_email')
+
+
+    user = User.query.filter_by(email=user_email).first()
+
+
+    return render_template('success.html', name=user.name, email=user.email, tasks=tasks, skills=skills_array,causes=causes_array)
 
 
 
@@ -193,7 +288,7 @@ def need_a_hand():
     if request.method == 'POST':
         title = request.form['title']
         date = request.form['date']
-        print(request.form.getlist('skills'))
+
         skills = ', '.join(request.form.getlist('skills[]'))
         causes = ', '.join(request.form.getlist('causes[]'))
 
@@ -201,7 +296,10 @@ def need_a_hand():
 
         additional_info = request.form['additional-info']
         time_required = request.form['time-required']
-        min_age = request.form['min-age']
+        min_age = request.form.get('min_age')
+        if min_age == None:
+            min_age = 0
+
 
         user_email = session['user_email']
         online = False

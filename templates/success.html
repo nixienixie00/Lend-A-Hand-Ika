@@ -475,13 +475,14 @@
         <a href="javascript:void(0)" class="closebtn" onclick="closeSidebar()">&times;</a>
 
 
-        <button id="search-btn" onclick=""> Search </button>
 
-            <form name="filter" onsubmit="event.preventDefault();closeNav()">
+
+            <form name="filter" method="post" action="/filter">
+                <button id="search-btn" type="submit"> Search </button>
                 <h4> Duration </h4>
-                <input type="number" id="min-time" style="width: 20%">
+                <input type="number" name="min-time" id="min-time" style="width: 20%">
                 <label for="min-time"> to</label>
-                <input type="number" id="max-time" style="width: 20%">
+                <input type="number" name="max-time" id="max-time" style="width: 20%">
                 <label for="max-time"> minutes </label>
 
                 <h4> Causes </h4>
@@ -490,7 +491,7 @@
                 {% for i in range(causes|length) %}
                     <li>
                         <label class="container"> {{causes[i]}}
-                          <input type="checkbox" name = "{{causes[i]}}" value = "{{causes[i]}}" id="cause">
+                          <input type="checkbox" name = "causes" value = "{{causes[i]}}" id="cause">
                           <span class="checkmark"></span>
                         </label>
                     </li>
@@ -515,7 +516,7 @@
                 {% for i in range(skills|length) %}
                     <li>
                         <label class="container"> {{skills[i]}}
-                          <input type="checkbox" id="skill" name = "{{skills[i]}}" value = "{{skills[i]}}">
+                          <input type="checkbox" id="skill" name = "skills" value = "{{skills[i]}}">
                           <span class="checkmark"></span>
                         </label>
                     </li>
@@ -524,7 +525,7 @@
 
 
                 <h4> Age </h4>
-                <input type="number" id="age" style="width: 30%">
+                <input type="number" name="age" id="age" style="width: 30%">
                 <label for="age"> years +</label>
 
 
