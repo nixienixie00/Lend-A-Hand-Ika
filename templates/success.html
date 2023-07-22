@@ -172,7 +172,7 @@
         .results {
             text-align: center;
             width: 27%;
-            height: 53vh;
+            height: 55vh;
 
             background-color: #ECECEC;
             margin: 20px;
@@ -511,9 +511,11 @@
                           <input type="checkbox" name = "inperson" value = "inperson" id="inperson">
                           <span class="checkmark"></span>
                  </label>
-                <input type="range" min="1" max="100"  oninput="progressScript()">
+                 <label for="distance"> Up to </label>
+                <input type="number" max="150" name="distance" id="distance" style="width: 30%">
+                <label for="distance"> km away</label>
 
-                <div class="value">0</div>
+
                 <h4> Required skills</h4>
                 <ul style="display: table-row">
                 {% for i in range(skills|length) %}

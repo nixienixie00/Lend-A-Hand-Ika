@@ -12,7 +12,7 @@ import requests
 import json
 
 
-def distance(string,string2):
+def distance_func(string,string2):
 
     locator = Nominatim(user_agent='myGeocoder')
     location = locator.geocode(string)
@@ -96,6 +96,7 @@ def login():
         if user and user.password == password:
             session['user_email'] = user.email  # Store the user's email in the session
             session['name'] = user.name
+            session['address'] = user.address
 
 
 
@@ -151,20 +152,27 @@ def filter():
 
 
 
-    location = 1000000
+    location = 100000
     if results.get('inperson') == 'inperson':
         location = 0
 
 
-    if location > 0 and online == False:
+
+
+    if (location == 10000) and (online == False):
         location = 0
         online = True
 
 
     submitted_skills = request.form.getlist('skills')
 
-    tasks = Task.query.filter(Task.date >= date.today(),
-                              Task.time_required >= mintime, Task.min_age >= age, Task.time_required <= maxtime, ((func.length(Task.location) > location) | (Task.online == online)) )
+    if online:
+
+        tasks = Task.query.filter(Task.date >= date.today(),
+                              Task.time_required >= mintime, Task.min_age >= age, Task.time_required <= maxtime, ((func.length(Task.location) > location) | (Task.online == True)))
+    elif location == 0:
+        tasks = Task.query.filter(Task.date >= date.today(),
+                              Task.time_required >= mintime, Task.min_age >= age, Task.time_required <= maxtime, Task.online == False)
 
     submitted_causes = request.form.getlist('causes')
 
@@ -200,17 +208,24 @@ def filter():
         tasks = tasks.all()
 
 
+    distances = []
+    distance= results.get('distance')
+    if location == 0:
+        if len(distance) == 0:
+            distance= 150
+        for task in tasks:
+            if task.online == False:
+                if len(task.location) == 0:
+                    distances.append("N/A")
+                else:
+                    d = distance_func(task.location, session['address'])
+                    if d > int(distance):
 
-
-
-
-
-
-
-
-
-
-
+                        tasks.remove(task)
+                    else:
+                        distances.append(d)
+            else:
+                distances.append(0)
 
 
 
@@ -221,7 +236,7 @@ def filter():
     user = User.query.filter_by(email=user_email).first()
 
 
-    return render_template('success.html', name=user.name, email=user.email, tasks=tasks, skills=skills_array,causes=causes_array)
+    return render_template('success.html', name=user.name, email=user.email, tasks=tasks, skills=skills_array,causes=causes_array,distances=distances)
 
 
 
@@ -242,7 +257,13 @@ def success():
     temp = Task.query.all()
 
     for row in temp:
-        distances.append(distance(row.location, user.address))
+        if row.online == False:
+            if len(row.location)== 0:
+                distances.append("N/A")
+            else:
+                distances.append(distance_func(row.location, user.address))
+        else:
+            distances.append(0)
 
     return render_template('success.html', name=user.name, email=user.email, tasks=tasks, skills=skills_array,causes=causes_array,distances=distances)
 
